@@ -5,6 +5,16 @@
 #include "Pixel.h"
 #include "PaintSurface.h"
 
+static inline double rotateX(double x, double y, double teta)
+{
+    return x * cos(teta) - y * sin(teta);
+}
+
+static inline double rotateY(double x, double y, double teta)
+{
+    return x * sin(teta) + y * cos(teta);
+}
+
 Painter::Painter(PaintSurface *surface) :
     surface(surface),
     color(nullptr)
@@ -58,6 +68,9 @@ void Painter::drawEllipse(size_t x0, size_t y0,
                           size_t a, size_t b,
                           double angle, const Pixel &color)
 {
+    if (a == 0 || b == 0)
+        return;
+
     double x;
     double y = b;
     double t = 0;
@@ -70,13 +83,20 @@ void Painter::drawEllipse(size_t x0, size_t y0,
         x = a * sin(t);
         y = b * cos(t);
 
-        int _x = int(round(x));
-        int _y = int(round(y));
+        int xrp = int(round(rotateX(x, y, +angle)));
+        int yrp = int(round(rotateY(x, y, +angle)));
+        int xrn = int(round(rotateX(x, y, -angle)));
+        int yrn = int(round(rotateY(x, y, -angle)));
 
-        (*surface)[x0 + _x][y0 + _y] = color;
-        (*surface)[x0 + _x][y0 - _y] = color;
-        (*surface)[x0 - _x][y0 + _y] = color;
-        (*surface)[x0 - _x][y0 - _y] = color;
+        (*surface)[x0 + xrn][y0 + yrn] = color;
+        (*surface)[x0 + xrp][y0 - yrp] = color;
+        (*surface)[x0 - xrp][y0 + yrp] = color;
+        (*surface)[x0 - xrn][y0 - yrn] = color;
+
+        //(*surface)[x0 + _x][y0 + _y] = color;
+        //(*surface)[x0 + _x][y0 - _y] = color;
+        //(*surface)[x0 - _x][y0 + _y] = color;
+        //(*surface)[x0 - _x][y0 - _y] = color;
 
         t += h;
     }
@@ -88,13 +108,23 @@ void Painter::drawEllipse(size_t x0, size_t y0,
         x = a * sin(t);
         y = b * cos(t);
 
-        int _x = int(round(x));
-        int _y = int(round(y));
+        int xrp = int(round(rotateX(x, y, +angle)));
+        int yrp = int(round(rotateY(x, y, +angle)));
+        int xrn = int(round(rotateX(x, y, -angle)));
+        int yrn = int(round(rotateY(x, y, -angle)));
 
-        (*surface)[x0 + _x][y0 + _y] = color;
-        (*surface)[x0 + _x][y0 - _y] = color;
-        (*surface)[x0 - _x][y0 + _y] = color;
-        (*surface)[x0 - _x][y0 - _y] = color;
+        (*surface)[x0 + xrn][y0 + yrn] = color;
+        (*surface)[x0 + xrp][y0 - yrp] = color;
+        (*surface)[x0 - xrp][y0 + yrp] = color;
+        (*surface)[x0 - xrn][y0 - yrn] = color;
+
+        //int _x = int(round(x));
+        //int _y = int(round(y));
+
+        //(*surface)[x0 + _x][y0 + _y] = color;
+        //(*surface)[x0 + _x][y0 - _y] = color;
+        //(*surface)[x0 - _x][y0 + _y] = color;
+        //(*surface)[x0 - _x][y0 - _y] = color;
 
         t += h;
     }
