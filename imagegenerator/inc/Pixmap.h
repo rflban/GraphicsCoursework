@@ -2,6 +2,7 @@
 #define GCW_PIXMAP_H_
 
 #include "PaintSurface.h"
+#include "Pixel.h"
 
 class Pixmap : public PaintSurface
 {

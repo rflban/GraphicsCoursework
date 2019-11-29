@@ -1,5 +1,4 @@
 #include "Pixmap.h"
-#include "Pixel.h"
 #include "Painter.h"
 #include "PPMGenerator.h"
 
