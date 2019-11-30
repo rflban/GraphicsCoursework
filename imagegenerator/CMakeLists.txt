@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.1.0)
 
-project(gcw_imagegenerator)
+project(gcwimg)
 
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_COMPILER clang++)
@@ -16,20 +16,16 @@ set(TSRC
 )
 
 set(SRC
-    src/main.cc
-
     src/Pixmap.cc
     src/Painter.cc
     src/PPMGenerator.cc
 )
 
-add_executable(gcw_imagegenerator
-    ${INC}
-    ${TSRC}
+add_library(gcwimg SHARED
     ${SRC}
 )
 
-target_include_directories(gcw_imagegenerator
+target_include_directories(gcwimg
     PUBLIC
         "inc"
 )
