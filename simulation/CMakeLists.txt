@@ -16,6 +16,7 @@ set(TSRC
 )
 
 set(SRC
+    src/Galaxy.cc
 )
 
 add_library(simulation SHARED

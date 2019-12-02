@@ -1,22 +1,39 @@
+#include <cstdio>
+#include <cmath>
+
 #include "Pixmap.h"
 #include "Painter.h"
 #include "PPMGenerator.h"
 
-#include <cstdio>
-#include <cmath>
+#include "Geometry.h"
+#include "Galaxy.h"
 
 int main()
 {
-    Pixmap p(500, 500);
+    Pixmap p(900, 900);
     Painter painter(&p);
 
-    painter.fillRect(0, 0, 500, 500, {255, 255, 255});
+    Galaxy galaxy({0, 0, 0}, 2500, 20000, 0.5, 0.55, 2000);
+    double scale_ratio = 400.0 / 20000;
 
-    double angle = 0;
-    for (int a = 5; a <= 200; a += 5)
+    painter.fillRect(0, 0, 500, 500, {0, 0, 0});
+
+    painter.setColor({255, 0, 0});
+    painter.drawEllipse(450, 450, (size_t)(scale_ratio * galaxy.getRaiusCore()), (size_t)(scale_ratio * galaxy.getRaiusCore()));
+    painter.setColor({0, 255, 0});
+    painter.drawEllipse(450, 450, (size_t)(scale_ratio * galaxy.getRadiusDisk()), (size_t)(scale_ratio * galaxy.getRadiusDisk()));
+
+    painter.setColor({255, 255, 255});
+
+    double dr = 750;
+    double dteta = M_PI / 48;
+    for (double r = 1.0 / 5 * galaxy.getRaiusCore(), teta = 0; r < galaxy.getRadiusDisk() + 1000; r += dr, teta += dteta)
     {
-        painter.drawEllipse(250, 250, a, a * 0.85, angle);
-        angle += M_PI / 20;
+        double a = r;
+        double b = sqrt(a * a - pow(galaxy.getEccentricity(r), 2) * a * a);
+
+        printf("%lu %lu\n", (size_t)(scale_ratio * a), (size_t)(scale_ratio * b));
+        painter.drawEllipse(450, 450, (size_t)(scale_ratio * a), (size_t)(scale_ratio * b), galaxy.getAngularOffset(r));
     }
 
     ImageGenerator *generator = new PPMGenerator;

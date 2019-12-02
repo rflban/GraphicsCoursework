@@ -14,5 +14,13 @@ add_executable(app
 
 target_link_libraries(app
     gcwimg
+    simulation
+)
+
+target_include_directories(app
+    PUBLIC
+        "inc"
+        "../imagegenerator/inc"
+        "../simulation/inc"
 )
 

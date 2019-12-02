@@ -6,4 +6,5 @@ project(fnabiev_gcw)
 
 add_subdirectory(app)
 add_subdirectory(imagegenerator)
+add_subdirectory(simulation)
 
