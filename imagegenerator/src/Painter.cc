@@ -88,10 +88,10 @@ void Painter::drawEllipse(size_t x0, size_t y0,
         int xrn = int(round(rotateX(x, y, -angle)));
         int yrn = int(round(rotateY(x, y, -angle)));
 
-        (*surface)[x0 + xrn][y0 + yrn] = color;
-        (*surface)[x0 + xrp][y0 - yrp] = color;
-        (*surface)[x0 - xrp][y0 + yrp] = color;
-        (*surface)[x0 - xrn][y0 - yrn] = color;
+        __set_pixel(x0 + xrn, y0 + yrn, color);
+        __set_pixel(x0 + xrp, y0 - yrp, color);
+        __set_pixel(x0 - xrp, y0 + yrp, color);
+        __set_pixel(x0 - xrn, y0 - yrn, color);
 
         //(*surface)[x0 + _x][y0 + _y] = color;
         //(*surface)[x0 + _x][y0 - _y] = color;
@@ -113,10 +113,10 @@ void Painter::drawEllipse(size_t x0, size_t y0,
         int xrn = int(round(rotateX(x, y, -angle)));
         int yrn = int(round(rotateY(x, y, -angle)));
 
-        (*surface)[x0 + xrn][y0 + yrn] = color;
-        (*surface)[x0 + xrp][y0 - yrp] = color;
-        (*surface)[x0 - xrp][y0 + yrp] = color;
-        (*surface)[x0 - xrn][y0 - yrn] = color;
+        __set_pixel(x0 + xrn, y0 + yrn, color);
+        __set_pixel(x0 + xrp, y0 - yrp, color);
+        __set_pixel(x0 - xrp, y0 + yrp, color);
+        __set_pixel(x0 - xrn, y0 - yrn, color);
 
         //int _x = int(round(x));
         //int _y = int(round(y));
@@ -128,5 +128,16 @@ void Painter::drawEllipse(size_t x0, size_t y0,
 
         t += h;
     }
+}
+
+void Painter::__set_pixel(size_t x, size_t y, const Pixel &pixel)
+{
+    if (x < 0 || y < 0)
+        return;
+
+    if (x >= surface->getWidth() || y >= surface->getHeight())
+        return;
+
+    (*surface)[x][y] = pixel;
 }
 
