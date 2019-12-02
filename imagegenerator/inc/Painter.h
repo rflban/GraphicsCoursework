@@ -30,6 +30,8 @@ public:
 private:
     PaintSurface *surface;
     Pixel *color;
+
+    void __set_pixel(size_t x, size_t y, const Pixel &pixel);
 };
 
 #endif // GCW_PAINTER_H_

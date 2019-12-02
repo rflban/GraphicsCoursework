@@ -10,8 +10,8 @@ public:
     Pixmap(size_t width, size_t height);
     ~Pixmap();
 
-    inline size_t getWidth() const { return width; }
-    inline size_t getHeight() const { return height; }
+    size_t getWidth() const override { return width; }
+    size_t getHeight() const override { return height; }
 
     Pixel *operator[](size_t idx) override;
     const Pixel *operator[](size_t idx) const override;
