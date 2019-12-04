@@ -1,5 +1,7 @@
 #include "Galaxy.h"
 
+#include <cmath>
+
 Galaxy::Galaxy(
             const Vector3D &pos,
             double radiusCore,
@@ -43,14 +45,29 @@ double Galaxy::getEccentricity(double radius)
     {
         return 0;
     }
-
-    return 0;
 }
-
-#include <cmath>
 
 double Galaxy::getAngularOffset(double radius)
 {
-    return 2.25 * M_PI * radius / radiusDisk;
+    if (radius <= 0)
+    {
+        return 0;
+    }
+    else if (radius <= radiusCore)
+    {
+        return 0 + radius / radiusCore * M_PI;
+    }
+    else if (radiusCore < radius && radius <= radiusDisk)
+    {
+        return getAngularOffset(radiusCore) + (radius - radiusCore) / (radiusDisk - radiusCore) * M_PI;
+    }
+    else if (radiusDisk < radius && radius <= 2 * radiusDisk)
+    {
+        return getAngularOffset(radiusDisk) + (radius - radiusDisk) / radiusDisk * M_PI;
+    }
+    else
+    {
+        return 0;
+    }
 }
 
