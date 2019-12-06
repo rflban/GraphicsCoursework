@@ -16,7 +16,8 @@ set(TSRC
 )
 
 set(SRC
-    src/Galaxy.cc
+    src/SpiralGalaxy.cc
+    src/SGOrbitCalculator.cc
 )
 
 add_library(simulation SHARED

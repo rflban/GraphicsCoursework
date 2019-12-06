@@ -1,8 +1,8 @@
-#include "Galaxy.h"
+#include "SpiralGalaxy.h"
 
 #include <cmath>
 
-Galaxy::Galaxy(
+SpiralGalaxy::SpiralGalaxy(
             const Vector3D &pos,
             double radiusCore,
             double radiusDisk,
@@ -19,11 +19,11 @@ Galaxy::Galaxy(
 {
 }
 
-Galaxy::~Galaxy()
+SpiralGalaxy::~SpiralGalaxy()
 {
 }
 
-double Galaxy::getEccentricity(double radius)
+double SpiralGalaxy::getEccentricity(double radius)
 {
     if (radius <= 0)
     {
@@ -47,7 +47,7 @@ double Galaxy::getEccentricity(double radius)
     }
 }
 
-double Galaxy::getAngularOffset(double radius)
+double SpiralGalaxy::getAngularOffset(double radius)
 {
     if (radius <= 0)
     {
