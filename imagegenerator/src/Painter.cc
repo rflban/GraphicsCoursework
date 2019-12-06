@@ -54,7 +54,7 @@ void Painter::fillPixel(size_t x, size_t y)
 
 void Painter::fillPixel(size_t x, size_t y, const Pixel &color)
 {
-    (*surface)[x][y] = color;
+    __set_pixel(x, y, color);
 }
 
 void Painter::drawEllipse(size_t x0, size_t y0,
@@ -93,11 +93,6 @@ void Painter::drawEllipse(size_t x0, size_t y0,
         __set_pixel(x0 - xrp, y0 + yrp, color);
         __set_pixel(x0 - xrn, y0 - yrn, color);
 
-        //(*surface)[x0 + _x][y0 + _y] = color;
-        //(*surface)[x0 + _x][y0 - _y] = color;
-        //(*surface)[x0 - _x][y0 + _y] = color;
-        //(*surface)[x0 - _x][y0 - _y] = color;
-
         t += h;
     }
 
@@ -117,14 +112,6 @@ void Painter::drawEllipse(size_t x0, size_t y0,
         __set_pixel(x0 + xrp, y0 - yrp, color);
         __set_pixel(x0 - xrp, y0 + yrp, color);
         __set_pixel(x0 - xrn, y0 - yrn, color);
-
-        //int _x = int(round(x));
-        //int _y = int(round(y));
-
-        //(*surface)[x0 + _x][y0 + _y] = color;
-        //(*surface)[x0 + _x][y0 - _y] = color;
-        //(*surface)[x0 - _x][y0 + _y] = color;
-        //(*surface)[x0 - _x][y0 - _y] = color;
 
         t += h;
     }
