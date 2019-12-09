@@ -18,6 +18,9 @@ set(TSRC
 set(SRC
     src/SpiralGalaxy.cc
     src/SGOrbitCalculator.cc
+
+    src/EGIntensityFunction.cc
+    src/SGDiskIntensityFunction.cc
 )
 
 add_library(simulation SHARED

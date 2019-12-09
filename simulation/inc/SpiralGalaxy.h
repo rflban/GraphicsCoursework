@@ -48,15 +48,5 @@ private:
     size_t starsQty; // stars quantity
 };
 
-struct Perturbation
-{
-    Perturbation(double angle, double denom) :
-        angleRatio(angle), denominator(denom)
-    {}
-
-    double angleRatio;
-    double denominator;
-};
-
 #endif // GCW_SPIRALGALAXY_H_
 

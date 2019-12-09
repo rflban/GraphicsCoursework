@@ -7,6 +7,7 @@
 
 #include "Geometry.h"
 #include "SpiralGalaxy.h"
+#include "GalaxyProperties.h"
 #include "SGOrbitCalculator.h"
 
 void drawOrbit(Painter &painter, double a, double b, double angleOffset, const Perturbation &pert, size_t x0, size_t y0);

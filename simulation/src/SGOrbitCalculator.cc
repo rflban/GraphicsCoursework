@@ -3,7 +3,7 @@
 #include <cmath>
 
 #include "Geometry.h"
-#include "SpiralGalaxy.h"
+#include "GalaxyProperties.h"
 
 static inline double rotateX(double x, double y, double teta)
 {
