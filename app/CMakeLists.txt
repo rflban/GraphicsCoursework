@@ -13,6 +13,7 @@ add_executable(app
 )
 
 target_link_libraries(app
+    #gamma
     gcwimg
     simulation
 )
