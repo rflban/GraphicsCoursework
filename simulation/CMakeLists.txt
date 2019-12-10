@@ -23,6 +23,10 @@ set(SRC
     src/SGDiskIntensityFunction.cc
 )
 
+target_link_libraries(app
+    gamma
+)
+
 add_library(simulation SHARED
     ${SRC}
 )
