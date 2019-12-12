@@ -5,5 +5,6 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wpedantic -g3 -fsanitize=
 project(fnabiev_gcw)
 
 add_subdirectory(app)
+add_subdirectory(gamma)
 add_subdirectory(imagegenerator)
 
