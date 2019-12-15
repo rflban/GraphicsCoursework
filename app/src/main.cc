@@ -10,6 +10,8 @@
 #include "GalaxyProperties.h"
 #include "SGOrbitCalculator.h"
 
+#include "SGRadiusDistributor.h"
+
 void drawOrbit(Painter &painter, double a, double b, double angleOffset, const Perturbation &pert, size_t x0, size_t y0);
 
 int main()
@@ -35,9 +37,7 @@ int main()
     {
         double a = r;
         double b = sqrt(a * a - pow(galaxy.getEccentricity(r), 2) * a * a);
-        //b = a * galaxy.getEccentricity(r);
 
-        printf("%lu %lu\n", (size_t)(scale_ratio * a), (size_t)(scale_ratio * b));
         //painter.drawEllipse(450, 450, (size_t)(scale_ratio * a), (size_t)(scale_ratio * b), -galaxy.getAngularOffset(r));
         //painter.drawEllipse(450, 450, (size_t)(scale_ratio * a), (size_t)(scale_ratio * b), M_PI/4);
         drawOrbit(painter, scale_ratio * a, scale_ratio * b, galaxy.getAngularOffset(r), {4, 40}, 450, 450);
@@ -50,6 +50,9 @@ int main()
 
     delete generator;
     fclose(fd);
+
+    SGRadiusDistributor distributor(1, 3000.0/3, 20000.0/3, 3000, 0, 20000 + (20000 - 3000), 1000);
+    distributor.setup();
 
     return 0;
 }

@@ -7,31 +7,35 @@ class SGIntensityFunction : public ParametricFunction
 {
 public:
     SGIntensityFunction(
-        double I0=0, double k=0,
-        double RD=0, double radiusCore=0
+        double I0=0,
+        double RECore=0, double REDisk=0,
+        double radiusCore=0
     );
 
     double compute(double x) const override;
     static
     double compute(
         double R, double I0,
-        double k, double RD,
+        double RECore, double REDisk,
         double radiusDisk
     );
 
     inline double getI0() { return I0; }
     inline void setI0(double I0) { this->I0 = I0; }
 
-    inline double getK() { return k; }
-    inline void setK(double k) { this->k = k; }
+    inline double getRECore() { return RECore; }
+    inline void setRECore(double RECore) { this->RECore = RECore; }
 
-    inline double getRD() { return RD; }
-    inline void setRD(double RD) { this->RD = RD; }
+    inline double getREDisk() { return REDisk; }
+    inline void setREDisk(double REDisk) { this->REDisk = REDisk; }
+
+    inline double getRadiusCore() { return radiusCore; }
+    inline void setRadiusCore(double radiusCore) { this->radiusCore = radiusCore; }
 
 private:
     double I0;
-    double k;
-    double RD;
+    double RECore;
+    double REDisk;
 
     double radiusCore;
 };

@@ -4,35 +4,37 @@
 #include "SGDiskIntensityFunction.h"
 
 SGIntensityFunction::SGIntensityFunction(
-        double I0, double k,
-        double RD, double radiusCore
+        double I0,
+        double RECore, double REDisk,
+        double radiusCore
         ) :
-    I0(I0), k(k),
-    RD(RD), radiusCore(radiusCore)
+    I0(I0),
+    RECore(RECore), REDisk(REDisk),
+    radiusCore(radiusCore)
 {
 }
 
 double SGIntensityFunction::compute(double x) const
 {
-    return compute(x, I0, k, RD, radiusCore);
+    return compute(x, I0, RECore, REDisk, radiusCore);
 }
 
 double SGIntensityFunction::compute(
         double R, double I0,
-        double k, double RD,
+        double RECore, double REDisk,
         double radiusCore
     )
 {
     if (R < radiusCore)
     {
-        return EGIntensityFunction::compute(R, I0, k);
+        return EGIntensityFunction::compute(R, I0, RECore);
     }
     else
     {
         return SGDiskIntensityFunction::compute(
             R - radiusCore,
-            EGIntensityFunction::compute(R, I0, k),
-            RD
+            EGIntensityFunction::compute(R, I0, RECore),
+            REDisk
         );
     }
 }

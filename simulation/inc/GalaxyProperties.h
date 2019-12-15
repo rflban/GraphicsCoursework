@@ -1,6 +1,8 @@
 #ifndef GCW_GALAXYPROPERTIES_H_
 #define GCW_GALAXYPROPERTIES_H_
 
+const double vne = 7.66925;
+
 struct Perturbation
 {
     Perturbation(double angle, double denom) :

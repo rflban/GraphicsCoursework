@@ -13,7 +13,7 @@ add_executable(app
 )
 
 target_link_libraries(app
-    #gamma
+    gamma
     gcwimg
     simulation
 )
@@ -23,5 +23,6 @@ target_include_directories(app
         "inc"
         "../imagegenerator/inc"
         "../simulation/inc"
+        "../gamma/inc"
 )
 

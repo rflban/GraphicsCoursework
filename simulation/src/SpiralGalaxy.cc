@@ -1,6 +1,9 @@
 #include "SpiralGalaxy.h"
 
 #include <cmath>
+#include <random>
+
+#include "SGRadiusDistributor.h"
 
 SpiralGalaxy::SpiralGalaxy(
             const Vector3D &pos,
@@ -15,12 +18,31 @@ SpiralGalaxy::SpiralGalaxy(
     radiusDisk(radiusDisk),
     ecctyInnerst(ecctyInnerst),
     ecctyOuterst(ecctyOuterst),
-    starsQty(starsQty)
+    starsQty(starsQty),
+
+    stars(new SGStarDescriptor[starsQty])
 {
+    initStars();
 }
 
 SpiralGalaxy::~SpiralGalaxy()
 {
+    delete[] stars;
+}
+
+void SpiralGalaxy::initStars()
+{
+    SGRadiusDistributor rd(1, radiusCore / 3, radiusDisk / 3, radiusCore, 0, radiusDisk + (radiusDisk - radiusCore), 1000);
+    rd.setup();
+
+    for (size_t i = 0; i < starsQty; i++)
+    {
+        stars[i].a = rd.getRadius((double)rand() / RAND_MAX);
+        stars[i].b = sqrt(stars[i].a * stars[i].a * (1 - pow(getEccentricity(stars[i].a), 2)));
+
+        stars[i].angularOffset = getAngularOffset(stars[i].a);
+        stars[i].angularPos = 2 * M_PI * (double)rand() / RAND_MAX;
+    }
 }
 
 double SpiralGalaxy::getEccentricity(double radius)

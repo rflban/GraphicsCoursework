@@ -14,6 +14,6 @@ double SGDiskIntensityFunction::compute(double x) const
 
 double SGDiskIntensityFunction::compute(double R, double I0, double RD)
 {
-    return I0 * exp(-R / RD);
+    return I0 * exp(1.67834699 * -R / RD);
 }
 

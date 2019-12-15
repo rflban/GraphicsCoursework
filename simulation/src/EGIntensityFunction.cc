@@ -2,18 +2,22 @@
 
 #include <cmath>
 
-EGIntensityFunction::EGIntensityFunction(double I0, double k) :
-    I0(I0), k(k)
+#include "GalaxyProperties.h"
+
+EGIntensityFunction::EGIntensityFunction(double I0, double RE) :
+    I0(I0), RE(RE)
 {
 }
 
 double EGIntensityFunction::compute(double x) const
 {
-    return compute(x, I0, k);
+    return compute(x, I0, RE);
 }
 
-double EGIntensityFunction::compute(double R, double I0, double k)
+double EGIntensityFunction::compute(double R, double I0, double RE)
 {
-    return I0 * exp(-k * pow(R, 0.25));
+    //return I0 * exp(-2.4e-12 * pow(R, 0.25));
+    //return I0 * exp(-0.02 * pow(R, 0.25));
+    return I0 * exp(-vne * pow(R / RE, 0.25));
 }
 

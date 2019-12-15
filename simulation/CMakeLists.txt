@@ -21,6 +21,9 @@ set(SRC
 
     src/EGIntensityFunction.cc
     src/SGDiskIntensityFunction.cc
+    src/SGIntensityFunction.cc
+
+    src/SGRadiusDistributor.cc
 )
 
 add_library(simulation SHARED

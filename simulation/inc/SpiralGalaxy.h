@@ -4,6 +4,7 @@
 #include "Galaxy.h"
 
 #include "Geometry.h"
+#include "SGStarDescriptor.h"
 
 class SpiralGalaxy : public Galaxy
 {
@@ -33,6 +34,9 @@ public:
     inline size_t
     getStarsQty() override { return starsQty; }
 
+    inline const SGStarDescriptor *
+    getStars() { return stars; }
+
     double getEccentricity(double radius);
     double getAngularOffset(double radius);
 
@@ -46,6 +50,10 @@ private:
     double ecctyOuterst; // outermost ellipse eccentricity
 
     size_t starsQty; // stars quantity
+
+    SGStarDescriptor *stars;
+
+    void initStars();
 };
 
 #endif // GCW_SPIRALGALAXY_H_
