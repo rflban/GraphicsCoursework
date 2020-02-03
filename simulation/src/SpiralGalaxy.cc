@@ -5,6 +5,8 @@
 
 #include "SGRadiusDistributor.h"
 
+#define rnd() ((double)rand() / RAND_MAX)
+
 SpiralGalaxy::SpiralGalaxy(
             const Vector3D &pos,
             double radiusCore,
@@ -32,16 +34,24 @@ SpiralGalaxy::~SpiralGalaxy()
 
 void SpiralGalaxy::initStars()
 {
-    SGRadiusDistributor rd(1, radiusCore / 3, radiusDisk / 3, radiusCore, 0, radiusDisk + (radiusDisk - radiusCore), 1000);
+    SGRadiusDistributor rd(1, radiusCore / 3, radiusDisk / 3,
+                           radiusCore, 0,
+                           radiusDisk + (radiusDisk - radiusCore), 1000);
     rd.setup();
 
     for (size_t i = 0; i < starsQty; i++)
     {
-        stars[i].a = rd.getRadius((double)rand() / RAND_MAX);
-        stars[i].b = sqrt(stars[i].a * stars[i].a * (1 - pow(getEccentricity(stars[i].a), 2)));
+        stars[i].a = rd.getRadius(rnd());
+        stars[i].b = sqrt(stars[i].a *
+                     stars[i].a *
+                     (1 - pow(getEccentricity(stars[i].a), 2)));
 
         stars[i].angularOffset = getAngularOffset(stars[i].a);
         stars[i].angularPos = 2 * M_PI * (double)rand() / RAND_MAX;
+
+        stars[i].brightness = 0.2 + 0.8 * rnd();
+        stars[i].brightness = 0.6 * exp(-stars[i].a / radiusDisk * 3) +
+                              0.1 + 0.3 * rnd();
     }
 }
 
@@ -57,11 +67,15 @@ double SpiralGalaxy::getEccentricity(double radius)
     }
     else if (radiusCore < radius && radius <= radiusDisk)
     {
-        return ecctyInnerst + (ecctyOuterst - ecctyInnerst) * (radius - radiusCore) / (radiusDisk - radiusCore);
+        return ecctyInnerst + (ecctyOuterst - ecctyInnerst) *
+                              (radius - radiusCore) /
+                              (radiusDisk - radiusCore);
     }
     else if(radiusDisk < radius && radius <= 2 * radiusDisk)
     {
-        return ecctyOuterst - ecctyOuterst * (radius - radiusDisk) / radiusDisk;
+        return ecctyOuterst - ecctyOuterst *
+                              (radius - radiusDisk) /
+                              radiusDisk;
     }
     else
     {
@@ -81,11 +95,14 @@ double SpiralGalaxy::getAngularOffset(double radius)
     }
     else if (radiusCore < radius && radius <= radiusDisk)
     {
-        return getAngularOffset(radiusCore) + (radius - radiusCore) / (radiusDisk - radiusCore) * M_PI;
+        return getAngularOffset(radiusCore) + (radius - radiusCore) /
+                                              (radiusDisk - radiusCore) *
+                                              M_PI;
     }
     else if (radiusDisk < radius && radius <= 2 * radiusDisk)
     {
-        return getAngularOffset(radiusDisk) + (radius - radiusDisk) / radiusDisk * M_PI;
+        return getAngularOffset(radiusDisk) + (radius - radiusDisk) /
+                                              radiusDisk * M_PI;
     }
     else
     {

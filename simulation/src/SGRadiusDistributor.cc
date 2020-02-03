@@ -1,5 +1,7 @@
 #include "SGRadiusDistributor.h"
 
+#include <cmath>
+
 #include "SimpsonsRuleIntegrator.h"
 #include "SGIntensityFunction.h"
 
@@ -15,7 +17,9 @@ SGRadiusDistributor::SGRadiusDistributor(
     probabilities({ nullptr, nullptr, nullptr, 0 }),
     radiuses({ nullptr, nullptr, nullptr, 0 })
 {
-    ParametricFunction *func = new SGIntensityFunction(I0, RECore, REDisk, radiusCore);
+    ParametricFunction *func =
+        new SGIntensityFunction(I0, RECore, REDisk, radiusCore);
+
     integrator = new SimpsonsRuleIntegrator(func, stepsQty);
 }
 
@@ -77,7 +81,7 @@ double SGRadiusDistributor::getRadius(double p)
     int idx = (int)(p / h);
     double delta = p - idx * h;
 
-    return radiuses.Y[idx] + delta * radiuses.D[idx];
+    return std::fabs(radiuses.Y[idx] + delta * radiuses.D[idx]);
 }
 
 #include <cstdio>

@@ -8,6 +8,8 @@ struct SGStarDescriptor
 
     double angularOffset;
     double angularPos;
+
+    double brightness;
 };
 
 #endif // GCW_SGSTARDESCRIPTOR_H_

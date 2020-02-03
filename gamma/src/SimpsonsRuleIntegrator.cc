@@ -2,7 +2,8 @@
 
 #include "ParametricFunction.h"
 
-SimpsonsRuleIntegrator::SimpsonsRuleIntegrator(ParametricFunction *func, size_t stepsQty) :
+SimpsonsRuleIntegrator::SimpsonsRuleIntegrator(ParametricFunction *func,
+                                               size_t stepsQty) :
     Integrator(func, stepsQty)
 {
 }
@@ -35,9 +36,11 @@ double SimpsonsRuleIntegrator::integrate(
     return y;
 }
 
-TracedIntegral SimpsonsRuleIntegrator::integrateTraced(double a, double b) const
+TracedIntegral SimpsonsRuleIntegrator::integrateTraced(double a,
+                                                       double b) const
 {
-    size_t tracedQty = (stepsQty >> 1) + (stepsQty & 1); // tq = (sq / 2) + (sq % 2)
+    // tq = (sq / 2) + (sq % 2)
+    size_t tracedQty = (stepsQty >> 1) + (stepsQty & 1);
 
     TracedIntegral vals = { new double[tracedQty],
                             new double[tracedQty],

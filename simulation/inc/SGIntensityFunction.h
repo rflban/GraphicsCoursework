@@ -30,7 +30,8 @@ public:
     inline void setREDisk(double REDisk) { this->REDisk = REDisk; }
 
     inline double getRadiusCore() { return radiusCore; }
-    inline void setRadiusCore(double radiusCore) { this->radiusCore = radiusCore; }
+    inline void setRadiusCore(double radiusCore)
+    { this->radiusCore = radiusCore; }
 
 private:
     double I0;

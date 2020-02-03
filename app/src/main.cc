@@ -1,4 +1,6 @@
 #include <cstdio>
+#include <random>
+#include <ctime>
 #include <cmath>
 
 #include "Pixmap.h"
@@ -9,6 +11,7 @@
 #include "SpiralGalaxy.h"
 #include "GalaxyProperties.h"
 #include "SGOrbitCalculator.h"
+#include "SGStarDescriptor.h"
 
 #include "SGRadiusDistributor.h"
 
@@ -16,13 +19,15 @@ void drawOrbit(Painter &painter, double a, double b, double angleOffset, const P
 
 int main()
 {
+    srand(time(0));
+
     Pixmap p(900, 900);
     Painter painter(&p);
 
-    SpiralGalaxy galaxy({0, 0, 0}, 3000, 20000, 0.45, 0.46, 2000);
+    SpiralGalaxy galaxy({0, 0, 0}, 3000, 20000, 0.45, 0.46, 25000);
     double scale_ratio = 400.0 / 20000;
 
-    painter.fillRect(0, 0, 500, 500, {0, 0, 0});
+    painter.fillRect(0, 0, 900, 900, {0, 0, 0});
 
     painter.setColor({255, 0, 0});
     painter.drawEllipse(450, 450, (size_t)(scale_ratio * galaxy.getRaiusCore()), (size_t)(scale_ratio * galaxy.getRaiusCore()));
@@ -44,15 +49,35 @@ int main()
     }
 
     ImageGenerator *generator = new PPMGenerator;
-    FILE *fd = fopen("test.ppm", "w");
+    FILE *fd = fopen("orbits.ppm", "w");
 
+    generator->generate(fd, p);
+
+    fclose(fd);
+
+    painter.fillRect(0, 0, 900, 900, {0, 0, 0});
+
+    Vector2D pos;
+    SGStarDescriptor s;
+    for (size_t idx = 0; idx < galaxy.getStarsQty(); idx++)
+    {
+        s = galaxy.getStars()[idx];
+        pos = SGOrbitCalculator::calculate(s.a, s.b, s.angularOffset, {4, 40}, s.angularPos);
+        pos = SGOrbitCalculator::calculate(scale_ratio * s.a, scale_ratio * s.b, s.angularOffset, {4, 40}, s.angularPos);
+
+        printf("%lf\n", s.a);
+
+        ubyte c = (ubyte)(round(255 * s.brightness));
+
+        painter.fillPixel(450 + (size_t)round(pos.x), 450 + (size_t)round(pos.y),
+                          { c, c, c });
+    }
+
+    fd = fopen("stars.ppm", "w");
     generator->generate(fd, p);
 
     delete generator;
     fclose(fd);
-
-    SGRadiusDistributor distributor(1, 3000.0/3, 20000.0/3, 3000, 0, 20000 + (20000 - 3000), 1000);
-    distributor.setup();
 
     return 0;
 }

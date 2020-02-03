@@ -15,7 +15,8 @@ public:
 
     Vector2D calculate(double angleOffset);
 
-    static Vector2D calculate(
+    static
+    Vector2D calculate(
         double a, double b,
         double angleOffset, const Perturbation &pert,
         double polarAngle
