@@ -15,7 +15,7 @@ int main()
     Painter painter(&p);
 
     std::mt19937 gen(time(NULL));
-    std::normal_distribution<> nd(0, 0.015);
+    std::normal_distribution<> nd(0, 0.010);
     std::normal_distribution<> nd1(0, 1);
 
     double scale_ratio = 100;
@@ -27,7 +27,7 @@ int main()
 
     double ones[2] = { -1, 1 };
 
-    double basemean = 10;
+    double basemean = 1.5;
     double stddev;
 
     for (int idx = 0; idx < 1000; idx++)
@@ -41,7 +41,8 @@ int main()
         }
 
         //double mean = basemean * ((fabs(r) / radius));
-        double mean = basemean * (1 - exp((-(radius - fabs(r)) * (radius - fabs(r))) / 1));
+        //double mean = basemean * (1 - exp((-(radius - fabs(r)) * (radius - fabs(r))) / 1));
+        double mean = basemean * (2 / (fabs(r) / radius - 2) + 2);
         //double mean = basemean;
         stddev = mean * 0.5;
 
@@ -57,9 +58,15 @@ int main()
 
         int x = round(r * cos(theta) * scale_ratio);
         //int y = round(r * sin(theta) * scale_ratio * 0.7);
-        int y = round(r * sin(theta) * scale_ratio * 1 + r * sin(theta * 4) * scale_ratio / 1 * (1 - fabs(r) / radius));
-        //int y = round(r * sin(theta) * scale_ratio * 1);
+        //int y = round(r * sin(theta) * scale_ratio * 1 + r * sin(theta * 4) * scale_ratio / 1 * (1 - fabs(r) / radius));
+        //int y = round(r * sin(theta) * scale_ratio * 1 + r * sin(theta * 4) * scale_ratio / 1 * (2 / (fabs(r) / radius - 2) + 2));
+        int y = round(r * sin(theta) * scale_ratio * k);
         //std::cout << mean << ' ' << stddev << ' ' << nd2(gen) << '\n';
+
+        if (fabs(x) < radius_core * 4 * scale_ratio)
+        {
+            y *= k;
+        }
 
         painter.fillPixel(450 + x, 450 + y);
     }
