@@ -7,7 +7,8 @@ struct SGStarDescriptor
     double b;
 
     double angularOffset;
-    double angularPos;
+    double azimuth;
+    double zenith;
 
     double brightness;
 };

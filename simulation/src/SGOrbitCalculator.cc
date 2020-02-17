@@ -48,7 +48,7 @@ Vector2D SGOrbitCalculator::calculate(
     if (pert.angleRatio > 0 && pert.denominator > 0)
     {
         x += a / pert.denominator * cos(polarAngle * pert.angleRatio);
-        y += a / pert.denominator * sin(polarAngle * pert.angleRatio);
+        y += b / pert.denominator * sin(polarAngle * pert.angleRatio);
     }
 
     pos.x = rotateX(x, y, angularOffset);

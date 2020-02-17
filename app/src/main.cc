@@ -13,7 +13,7 @@
 #include "SGOrbitCalculator.h"
 #include "SGStarDescriptor.h"
 
-#include "SGRadiusDistributor.h"
+#include "SGDiskRadiusDistributor.h"
 
 void drawOrbit(Painter &painter, double a, double b, double angleOffset, const Perturbation &pert, size_t x0, size_t y0);
 
@@ -23,6 +23,9 @@ int main()
 
     Pixmap p(900, 900);
     Painter painter(&p);
+
+    Pixmap p1(900, 900);
+    Painter painter1(&p1);
 
     SpiralGalaxy galaxy({0, 0, 0}, 3000, 20000, 0.45, 0.46, 25000);
     double scale_ratio = 400.0 / 60000;
@@ -35,6 +38,7 @@ int main()
     painter.drawEllipse(450, 450, (size_t)(scale_ratio * galaxy.getRadiusDisk()), (size_t)(scale_ratio * galaxy.getRadiusDisk()));
 
     painter.setColor({255, 255, 255});
+    painter1.setColor({255, 255, 255});
 
     double dr = 750;
     double dteta = M_PI / 48;
@@ -62,10 +66,10 @@ int main()
     for (size_t idx = 0; idx < galaxy.getStarsQty(); idx++)
     {
         s = galaxy.getStars()[idx];
-        pos = SGOrbitCalculator::calculate(s.a, s.b, s.angularOffset, {4, 40}, s.angularPos);
-        pos = SGOrbitCalculator::calculate(scale_ratio * s.a, scale_ratio * s.b, s.angularOffset, {4, 40}, s.angularPos);
+        pos = SGOrbitCalculator::calculate(s.a, s.b, s.angularOffset, {4, 40}, s.azimuth);
+        pos = SGOrbitCalculator::calculate(scale_ratio * s.a, scale_ratio * s.b, s.angularOffset, {4, 40}, s.azimuth);
 
-        printf("%lf\n", s.a);
+        //printf("%lf\n", s.a);
 
         ubyte c = (ubyte)(round(255 * s.brightness));
 
@@ -78,188 +82,106 @@ int main()
     fclose(fd);
 
     std::mt19937 gen(time(NULL));
-    std::normal_distribution<> nd(0, 0.005 * galaxy.getRaiusCore()*1e-3);
-    std::normal_distribution<> nd1(0, 1);
+    //std::normal_distribution<> nd(0, 0.001 * galaxy.getRaiusCore()*1e-3);
+    std::normal_distribution<> nd(0, pow(asin(galaxy.getRaiusCore() / galaxy.getRadiusDisk()), 1) / 3);
+    std::normal_distribution<> nd1(0, M_PI / 12);
 
-    double ones[2] = { -1, 1 };
+    std::normal_distribution<> nd2;
 
     painter.fillRect(0, 0, 900, 900, {0, 0, 0});
+    painter1.fillRect(0, 0, 900, 900, {0, 0, 0});
 
     for (size_t idx = 0; idx < galaxy.getStarsQty(); idx++)
     {
         s = galaxy.getStars()[idx];
-        auto pos0 = SGOrbitCalculator::calculate(s.a, s.b, s.angularOffset, {4, 40}, s.angularPos);
-        pos = SGOrbitCalculator::calculate(scale_ratio * s.a, scale_ratio * s.b, s.angularOffset, {4, 40}, s.angularPos);
+        auto pos0 = SGOrbitCalculator::calculate(s.a, s.b, s.angularOffset, {4, 40}, s.azimuth);
+        pos = SGOrbitCalculator::calculate(scale_ratio * s.a, scale_ratio * s.b, s.angularOffset, {4, 40}, s.azimuth);
 
-        printf("%lf\n", s.a);
+        //printf("%lf\n", s.a);
 
         ubyte c = (ubyte)(round(255 * s.brightness));
 
         double r = sqrt(pos0.x*pos0.x + pos0.y*pos0.y);
         double theta;
-        theta = 2*M_PI * nd(gen);
+        //theta = 2*M_PI * nd(gen);
+        theta = nd(gen);
 
-        if (fabs(sqrt(r*r*r*r*sin(theta)*sin(theta))) <= galaxy.getRaiusCore())
+        ubyte _r = c, _g = c, _b = c;
+
+        //if (fabs(sqrt(r*r*r*r*sin(theta)*sin(theta))) <= galaxy.getRaiusCore())
+        if (fabs(r / cos(theta)) <= galaxy.getRaiusCore())
         {
             //theta = 2*M_PI * ((double)gen() / gen.max());
-            theta = 2*M_PI * nd1(gen);
+            //theta = nd1(gen);
+
+            //_r = 0;
+            //_g = 255;
+            //_b = 0;
         }
 
-        double z = r * sin(theta) * scale_ratio;
+        //double z = r * sin(theta) * scale_ratio;
+        double z = r * tan(theta) * scale_ratio;
 
-        painter.fillPixel(450 + (size_t)round(r*scale_ratio * ones[gen() % 2]), 450 + (size_t)round(z),
-                          { c, c, c });
-        //painter.fillPixel(450 + (size_t)round(pos.x), 450 + (size_t)round(z),
-                          //{ c, c, c });
-    }
-
-    fd = fopen("RZ.ppm", "w");
-    generator->generate(fd, p);
-    fclose(fd);
-
-    painter.fillRect(0, 0, 900, 900, {0, 0, 0});
-
-    for (size_t idx = 0; idx < galaxy.getStarsQty(); idx++)
-    {
-        s = galaxy.getStars()[idx];
-        auto pos0 = SGOrbitCalculator::calculate(s.a, s.b, s.angularOffset, {4, 40}, s.angularPos);
-        pos = SGOrbitCalculator::calculate(scale_ratio * s.a, scale_ratio * s.b, s.angularOffset, {4, 40}, s.angularPos);
-
-        printf("%lf\n", s.a);
-
-        ubyte c = (ubyte)(round(255 * s.brightness));
-
-        double r = sqrt(pos0.x*pos0.x + pos0.y*pos0.y);
-        double theta;
-        theta = 2*M_PI * nd(gen);
-
-        if (fabs(sqrt(r*r*r*r*sin(theta)*sin(theta))) <= galaxy.getRaiusCore())
+        if (fabs(z) > galaxy.getRaiusCore() * 0.8 * scale_ratio)
         {
-            //theta = 2*M_PI * ((double)gen() / gen.max());
-            theta = 2*M_PI * nd1(gen);
+            //z *= 0.4 + 0.9 * ((double)gen() / gen.max());
+
+            //_r = 0;
+            //_g = 255;
+            //_b = 0;
         }
 
-        double z = r * sin(theta) * scale_ratio;
+        // x**2 / (1.2 * radCore) + y**2 / radCore = 1
+        // y**2 = radCore * (1 - x**2 / (1.2 * radCore))
+
+        // x**2 / radDisk + y**4 / (radCore / 4) = 1
+        // y**4 / (radCore / 4) = 1 - x**2 / radDisk
+        // y**4 = (radCore / 4)* (radDisk - x**2) / radDisk
+
+        //double y1 = pow(fabs(galaxy.getRaiusCore() * (1 - r*r / (0.8 * galaxy.getRaiusCore()))), 1.0 / 2);
+        double y1 = pow(fabs(galaxy.getRaiusCore()*galaxy.getRaiusCore() - r*r), 1.0 / 2);
+        double y2 = pow(fabs((galaxy.getRaiusCore() / 0.0000001) * (galaxy.getRadiusDisk() - r*r) / galaxy.getRadiusDisk()), 1.0 / 4);
+
+        printf("%lf %lf\n", y1, y2);
+
+        if (fabs(r) <= galaxy.getRaiusCore())
+        {
+            //nd2.param(std::normal_distribution<>::param_type( 0, galaxy.getRaiusCore() / 1.5 / 3));
+            nd2.param(std::normal_distribution<>::param_type( 0, y1 / 3));
+        }
+        else
+        {
+            //nd2.param(std::normal_distribution<>::param_type( 0, galaxy.getRaiusCore() / 4 / 3));
+            nd2.param(std::normal_distribution<>::param_type( 0, y2 / 3 * 0.5 + 1.0 * ((double)gen() / gen.max())));
+        }
+
+        z = nd2(gen) * scale_ratio;
+        //double ones[2] = { -1, 1 };
+        //z += r / 400.0 * tan(theta) * ((double)gen() / gen.max()) * ones[gen() % 2];
+
+        double alpha = M_PI / 6;
+        double ax = pos.x;
+        double ay = pos.y * cos(alpha) - z * sin(alpha);
+        double az = pos.y * sin(alpha) + z * cos(alpha);
 
         painter.fillPixel(450 + (size_t)round(pos.x), 450 + (size_t)round(z),
-                          { c, c, c });
+                          { _r, _g, _b });
+
+        painter1.fillPixel(450 + (size_t)round(ax), 450 + (size_t)round(az),
+                          { _r, _g, _b });
+
+        painter.setColor({255, 0, 0});
+        //painter.drawEllipse(450, 450, (size_t)(scale_ratio * galaxy.getRaiusCore()), (size_t)(scale_ratio * galaxy.getRaiusCore()));
+
+        painter.setColor({255, 255, 255});
     }
 
     fd = fopen("XZ.ppm", "w");
     generator->generate(fd, p);
     fclose(fd);
 
-    painter.fillRect(0, 0, 900, 900, {0, 0, 0});
-
-    for (size_t idx = 0; idx < galaxy.getStarsQty(); idx++)
-    {
-        s = galaxy.getStars()[idx];
-        auto pos0 = SGOrbitCalculator::calculate(s.a, s.b, s.angularOffset, {4, 40}, s.angularPos);
-        pos = SGOrbitCalculator::calculate(scale_ratio * s.a, scale_ratio * s.b, s.angularOffset, {4, 40}, s.angularPos);
-
-        printf("%lf\n", s.a);
-
-        ubyte c = (ubyte)(round(255 * s.brightness));
-
-        double r = sqrt(pos0.x*pos0.x + pos0.y*pos0.y);
-        double theta;
-        theta = 2*M_PI * nd(gen);
-
-        if (fabs(sqrt(r*r*r*r*sin(theta)*sin(theta))) <= galaxy.getRaiusCore())
-        {
-            //theta = 2*M_PI * ((double)gen() / gen.max());
-            theta = 2*M_PI * nd1(gen);
-        }
-
-        double z = r * sin(theta) * scale_ratio;
-
-        painter.fillPixel(450 + (size_t)round(pos.y), 450 + (size_t)round(z),
-                          { c, c, c });
-    }
-
-    fd = fopen("YZ.ppm", "w");
-    generator->generate(fd, p);
-    fclose(fd);
-
-    painter.fillRect(0, 0, 900, 900, {0, 0, 0});
-
-    for (size_t idx = 0; idx < galaxy.getStarsQty(); idx++)
-    {
-        s = galaxy.getStars()[idx];
-        auto pos0 = SGOrbitCalculator::calculate(s.a, s.b, s.angularOffset, {4, 40}, s.angularPos);
-        pos = SGOrbitCalculator::calculate(scale_ratio * s.a, scale_ratio * s.b, s.angularOffset, {4, 40}, s.angularPos);
-
-        printf("%lf\n", s.a);
-
-        ubyte c = (ubyte)(round(255 * s.brightness));
-
-        double r = sqrt(pos0.x*pos0.x + pos0.y*pos0.y);
-        double theta;
-        theta = 2*M_PI * nd(gen);
-
-        if (fabs(sqrt(r*r*r*r*sin(theta)*sin(theta))) <= galaxy.getRaiusCore())
-        {
-            //theta = 2*M_PI * ((double)gen() / gen.max());
-            theta = 2*M_PI * nd1(gen);
-        }
-
-        double z = r * sin(theta) * scale_ratio;
-
-        double cx = sqrt(3)*pos.x - sqrt(3)*z;
-        double cy = pos.x + 2*pos.y + z;
-        double cz = sqrt(2)*pos.x - sqrt(2)*pos.y + sqrt(2)*z;
-
-        painter.fillPixel(450 + (size_t)round(cx), 450 + (size_t)round(cy),
-                          { c, c, c });
-    }
-
-    fd = fopen("isometric.ppm", "w");
-    generator->generate(fd, p);
-    fclose(fd);
-
-    painter.fillRect(0, 0, 900, 900, {0, 0, 0});
-
-    for (size_t idx = 0; idx < galaxy.getStarsQty(); idx++)
-    {
-        s = galaxy.getStars()[idx];
-        auto pos0 = SGOrbitCalculator::calculate(s.a, s.b, s.angularOffset, {4, 40}, s.angularPos);
-        pos = SGOrbitCalculator::calculate(scale_ratio * s.a, scale_ratio * s.b, s.angularOffset, {4, 40}, s.angularPos);
-
-        printf("%lf\n", s.a);
-
-        ubyte c = (ubyte)(round(255 * s.brightness));
-
-        double r = sqrt(pos0.x*pos0.x + pos0.y*pos0.y);
-        double theta;
-        theta = 2*M_PI * nd(gen);
-
-        if (fabs(sqrt(r*r*r*r*sin(theta)*sin(theta))) <= galaxy.getRaiusCore())
-        {
-            //theta = 2*M_PI * ((double)gen() / gen.max());
-            theta = 2*M_PI * nd1(gen);
-        }
-
-        double z = r * sin(theta) * scale_ratio;
-
-        double alpha = M_PI / 6;
-        //double cx = pos.x*cos(alpha) - pos.y*sin(alpha);
-        //double cy = pos.x*sin(alpha) + cos(alpha);
-        //double cz = z;
-        double cx = pos.x;
-        double cy = pos.y;
-        double cz = z;
-
-        double beta = M_PI / 2;
-        double bx = cx;
-        double by = cy*cos(beta) - cz*sin(beta);
-        double bz = cy*sin(beta) + cz*cos(beta);
-
-        painter.fillPixel(450 + (size_t)round(bx), 450 + (size_t)round(bz),
-                          { c, c, c });
-    }
-
     fd = fopen("projection.ppm", "w");
-    generator->generate(fd, p);
+    generator->generate(fd, p1);
     fclose(fd);
 
     delete generator;

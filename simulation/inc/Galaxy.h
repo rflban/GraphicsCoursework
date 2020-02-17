@@ -7,7 +7,8 @@ class Galaxy
 {
 public:
     virtual inline size_t
-    getStarsQty() = 0;
+    getStarsQty() const = 0;
+
 };
 
 #endif // GCW_GALAXY_H_

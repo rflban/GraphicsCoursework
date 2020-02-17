@@ -23,15 +23,14 @@ set(SRC
     src/SGDiskIntensityFunction.cc
     src/SGIntensityFunction.cc
 
-    src/SGRadiusDistributor.cc
+    src/SGVerticalDistributor.cc
+    src/SGDiskRadiusDistributor.cc
+
+    src/MersenneTwisterGenerator.cc
 )
 
 add_library(simulation SHARED
     ${SRC}
-)
-
-target_link_libraries(simulation
-    gamma
 )
 
 target_include_directories(simulation

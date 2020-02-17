@@ -1,26 +1,28 @@
-#ifndef GCW_SGRADIUSDISTRIBUTOR_H_
-#define GCW_SGRADIUSDISTRIBUTOR_H_
+#ifndef GCW_SGDISKRADIUSDISTRIBUTOR_H_
+#define GCW_SGDISKRADIUSDISTRIBUTOR_H_
 
 #include <cstddef>
+
+#include "Distributor.h"
 
 class SGIntensityFunction;
 class Integrator;
 
-class SGRadiusDistributor
+class SGDiskRadiusDistributor : public Distributor
 {
 public:
-    SGRadiusDistributor(
+    SGDiskRadiusDistributor(
         double I0,
         double RECore, double REDisk,
         double radiusCore,
         double radiusMin, double radiusMax,
         size_t stepsQty
     );
-    ~SGRadiusDistributor();
+    ~SGDiskRadiusDistributor() override;
 
-    void setup();
+    void setup() override;
 
-    double getRadius(double p);
+    double operator()(const RandomGenerator &generator) const override;
 
 private:
     struct XYDerivative
@@ -39,6 +41,8 @@ private:
         ) const;
     };
 
+    double getRadius(double p) const;
+
     Integrator *integrator;
 
     double radiusMin;
@@ -48,5 +52,5 @@ private:
     XYDerivative radiuses;
 };
 
-#endif // GCW_SGRADIUSDISTRIBUTOR_H_
+#endif // GCW_SGDISKRADIUSDISTRIBUTOR_H_
 

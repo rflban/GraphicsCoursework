@@ -1,11 +1,13 @@
-#include "SGRadiusDistributor.h"
+#include "SGDiskRadiusDistributor.h"
 
 #include <cmath>
 
 #include "SimpsonsRuleIntegrator.h"
 #include "SGIntensityFunction.h"
 
-SGRadiusDistributor::SGRadiusDistributor(
+#include "RandomGenerator.h"
+
+SGDiskRadiusDistributor::SGDiskRadiusDistributor(
             double I0,
             double RECore, double REDisk,
             double radiusCore,
@@ -23,7 +25,7 @@ SGRadiusDistributor::SGRadiusDistributor(
     integrator = new SimpsonsRuleIntegrator(func, stepsQty);
 }
 
-SGRadiusDistributor::~SGRadiusDistributor()
+SGDiskRadiusDistributor::~SGDiskRadiusDistributor()
 {
     delete integrator->getFunc();
     delete integrator;
@@ -32,7 +34,7 @@ SGRadiusDistributor::~SGRadiusDistributor()
     radiuses.clear();
 }
 
-void SGRadiusDistributor::setup()
+void SGDiskRadiusDistributor::setup()
 {
     probabilities.clear();
     radiuses.clear();
@@ -74,7 +76,7 @@ void SGRadiusDistributor::setup()
     radiuses.dump("radiuses.csv");
 }
 
-double SGRadiusDistributor::getRadius(double p)
+double SGDiskRadiusDistributor::getRadius(double p) const
 {
     double h = 1.0 / radiuses.qty;
 
@@ -87,7 +89,7 @@ double SGRadiusDistributor::getRadius(double p)
 #include <cstdio>
 #define __free_ptr(ptr) if (ptr) delete[] ptr; ptr = nullptr
 
-void SGRadiusDistributor::XYDerivative::clear()
+void SGDiskRadiusDistributor::XYDerivative::clear()
 {
     __free_ptr(X);
     __free_ptr(Y);
@@ -96,7 +98,7 @@ void SGRadiusDistributor::XYDerivative::clear()
     qty = 0;
 }
 
-void SGRadiusDistributor::XYDerivative::dump(
+void SGDiskRadiusDistributor::XYDerivative::dump(
         const char *fname,
         const char *csep,
         const char *rsep
@@ -116,5 +118,10 @@ void SGRadiusDistributor::XYDerivative::dump(
 
         fclose(fd);
     }
+}
+
+double SGDiskRadiusDistributor::operator()(const RandomGenerator &generator) const
+{
+    return getRadius((double)generator() / generator.max());
 }
 

@@ -1,9 +1,13 @@
 #include "SpiralGalaxy.h"
 
 #include <cmath>
-#include <random>
+#include <ctime>
 
-#include "SGRadiusDistributor.h"
+#include "SGIterator.h"
+
+#include "SGVerticalDistributor.h"
+#include "SGDiskRadiusDistributor.h"
+#include "MersenneTwisterGenerator.h"
 
 #define rnd() ((double)rand() / RAND_MAX)
 
@@ -34,20 +38,24 @@ SpiralGalaxy::~SpiralGalaxy()
 
 void SpiralGalaxy::initStars()
 {
-    SGRadiusDistributor rd(1, radiusCore / 3, radiusDisk / 3,
-                           radiusCore, 0,
-                           radiusDisk + (radiusDisk - radiusCore), 1000);
+    SGDiskRadiusDistributor rd(1, radiusCore / 3, radiusDisk / 3,
+                               radiusCore, 0,
+                               radiusDisk + (radiusDisk - radiusCore), 1000);
     rd.setup();
+    MersenneTwisterGenerator gen(time(NULL));
 
     for (size_t i = 0; i < starsQty; i++)
     {
-        stars[i].a = rd.getRadius(rnd());
+        stars[i].a = rd(gen);
         stars[i].b = sqrt(stars[i].a *
                      stars[i].a *
                      (1 - pow(getEccentricity(stars[i].a), 2)));
 
         stars[i].angularOffset = getAngularOffset(stars[i].a);
-        stars[i].angularPos = 2 * M_PI * (double)rand() / RAND_MAX;
+
+        stars[i].azimuth = 2 * M_PI * ((double)gen() / gen.max());
+        stars[i].zenith = 0;
+        //stars[i].azimuth = 2 * M_PI * (double)rand() / RAND_MAX;
 
         stars[i].brightness = 0.2 + 0.8 * rnd();
         stars[i].brightness = 0.6 * exp(-stars[i].a / radiusDisk * 3) +
@@ -107,6 +115,34 @@ double SpiralGalaxy::getAngularOffset(double radius)
     else
     {
         return 0;
+    }
+}
+
+SpiralGalaxy::iterator SpiralGalaxy::begin()
+{
+    return iterator::begin(this);
+}
+
+SpiralGalaxy::iterator SpiralGalaxy::end()
+{
+    return iterator::end(this);
+}
+
+bool SpiralGalaxy::isExistingObject(ptrdiff_t idx) const
+{
+    return (0 <= idx) && ((size_t)idx < getStarsQty());
+}
+
+SGObject *SpiralGalaxy::getObject(ptrdiff_t idx)
+{
+    if (0 <= idx && (size_t)idx < getStarsQty())
+    {
+        return nullptr;
+        //return stars + idx;
+    }
+    else
+    {
+        return nullptr;
     }
 }
 

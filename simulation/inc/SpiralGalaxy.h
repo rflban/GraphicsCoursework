@@ -3,8 +3,11 @@
 
 #include "Galaxy.h"
 
+#include "SGIterator.h"
 #include "Geometry.h"
 #include "SGStarDescriptor.h"
+
+class SGObject;
 
 class SpiralGalaxy : public Galaxy
 {
@@ -19,6 +22,8 @@ public:
     );
     ~SpiralGalaxy();
 
+    using iterator = SGIterator;
+
     inline double
     getRaiusCore() { return radiusCore; }
 
@@ -32,13 +37,20 @@ public:
     getEcctyOuterst() { return ecctyOuterst; }
 
     inline size_t
-    getStarsQty() override { return starsQty; }
+    getStarsQty() const override { return starsQty; }
 
     inline const SGStarDescriptor *
     getStars() { return stars; }
 
     double getEccentricity(double radius);
     double getAngularOffset(double radius);
+
+    iterator begin();
+    iterator end();
+
+    SGObject *getObject(ptrdiff_t idx);
+
+    bool isExistingObject(ptrdiff_t idx) const;
 
 private:
     Vector3D pos;
