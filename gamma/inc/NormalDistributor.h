@@ -13,7 +13,7 @@ public:
 
     void setup() override;
 
-    double operator()(const RandomGenerator &generetor) const override = 0;
+    double operator()(const RandomGenerator &generetor) const override;
 
 private:
     std::normal_distribution<> *nd;
