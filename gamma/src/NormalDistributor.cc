@@ -1,5 +1,7 @@
 #include "NormalDistributor.h"
 
+#include "RandomGenerator.h"
+
 NormalDistributor::NormalDistributor(double mean, double stddef) :
     nd(new std::normal_distribution<>(mean, stddef))
 {
