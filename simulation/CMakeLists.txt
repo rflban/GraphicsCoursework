@@ -30,7 +30,6 @@ set(SRC
     src/SGDiskIntensityFunction.cc
     src/SGIntensityFunction.cc
 
-    src/SGVerticalDistributor.cc
     src/SGDiskRadiusDistributor.cc
 )
 

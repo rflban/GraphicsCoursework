@@ -6,7 +6,6 @@
 #include "SGIterator.h"
 #include "SGStar.h"
 
-#include "SGVerticalDistributor.h"
 #include "SGDiskRadiusDistributor.h"
 #include "MersenneTwisterGenerator.h"
 #include "SGStarInitializer.h"

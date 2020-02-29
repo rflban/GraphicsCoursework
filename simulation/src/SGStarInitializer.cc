@@ -118,6 +118,7 @@ void SGStarInitializer::distibuteVertically(SGStar &star)
     double rc_p_2;
     double rm_p_2;
 
+    // suppose that SG is ellipsoid:
     // r**2 / r_max**2 + v**2 / r_core**2 = 1
 
     r_p_2 = star.getA() * star.getA() + star.getB() * star.getB();
