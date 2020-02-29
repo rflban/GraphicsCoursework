@@ -8,7 +8,9 @@
 class MersenneTwisterGenerator : public RandomGenerator
 {
 public:
-    MersenneTwisterGenerator(unsigned int seed = 0);
+    MersenneTwisterGenerator();
+    MersenneTwisterGenerator(unsigned int seed);
+
     ~MersenneTwisterGenerator();
 
     unsigned int operator()() const override;
