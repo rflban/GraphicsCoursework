@@ -27,6 +27,7 @@ public:
     void operator()(SGStar &star);
 
     void distibuteOnDisk(SGStar &star);
+    void distibuteVertically(SGStar &star);
 
     inline void setGalaxy(const SpiralGalaxy *galaxy)
     { this->galaxy = galaxy; }

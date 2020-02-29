@@ -28,8 +28,7 @@ SpiralGalaxy::SpiralGalaxy(
     starsQty(starsQty),
     pert(pert),
 
-    stars(new SGStarDescriptor[starsQty]),
-    stars_(new SGStar[starsQty])
+    stars(new SGStar[starsQty])
 {
     initStars();
 }
@@ -37,38 +36,16 @@ SpiralGalaxy::SpiralGalaxy(
 SpiralGalaxy::~SpiralGalaxy()
 {
     delete[] stars;
-    delete[] stars_;
 }
 
 void SpiralGalaxy::initStars()
 {
-    SGDiskRadiusDistributor rd(1, radiusCore / 3, radiusDisk / 3,
-                               radiusCore, 0,
-                               radiusDisk + (radiusDisk - radiusCore), 1000);
-    rd.setup();
-    MersenneTwisterGenerator gen(time(NULL));
-
     SGStarInitializer starInitializer(this);
     starInitializer.setup();
 
     for (size_t i = 0; i < starsQty; i++)
     {
-        stars[i].a = rd(gen);
-        stars[i].b = sqrt(stars[i].a *
-                     stars[i].a *
-                     (1 - pow(getEccentricity(stars[i].a), 2)));
-
-        stars[i].angularOffset = getRotationAngle(stars[i].a);
-
-        stars[i].azimuth = 2 * M_PI * ((double)gen() / gen.max());
-        stars[i].zenith = 0;
-        //stars[i].azimuth = 2 * M_PI * (double)rand() / RAND_MAX;
-
-        //stars[i].brightness = 0.2 + 0.8 * rnd();
-        //stars[i].brightness = 0.6 * exp(-stars[i].a / radiusDisk * 3) +
-                              //0.1 + 0.3 * rnd();
-
-        starInitializer(stars_[i]);
+        starInitializer(stars[i]);
     }
 }
 
@@ -146,7 +123,7 @@ SGObject *SpiralGalaxy::getObject(ptrdiff_t idx)
 {
     if (0 <= idx && (size_t)idx < getStarsQty())
     {
-        return stars_ + idx;
+        return stars + idx;
     }
     else
     {

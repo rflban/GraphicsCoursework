@@ -13,7 +13,6 @@
 #include "SpiralGalaxy.h"
 #include "GalaxyProperties.h"
 #include "SGOrbitCalculator.h"
-#include "SGStarDescriptor.h"
 
 #include "SGObjectHandler.h"
 #include "SGDiskRadiusDistributor.h"

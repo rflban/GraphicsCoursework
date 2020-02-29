@@ -9,7 +9,6 @@
 #include "SGStar.h"
 
 #include "SGIterator.h"
-#include "SGStarDescriptor.h"
 
 #include "Geometry.h"
 
@@ -48,7 +47,7 @@ public:
     inline size_t
     getStarsQty() const override { return starsQty; }
 
-    inline const SGStarDescriptor *
+    inline const SGStar *
     getStars() { return stars; }
 
     double getEccentricity(double radius) const;
@@ -74,8 +73,7 @@ private:
 
     Perturbation pert;
 
-    SGStarDescriptor *stars;
-    SGStar *stars_;
+    SGStar *stars;
 
     void initStars();
 };

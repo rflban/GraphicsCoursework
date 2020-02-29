@@ -107,3 +107,7 @@ void SGStarInitializer::distibuteOnDisk(SGStar &star)
     star.setAzimuth(2 * M_PI * ((double)(*rnd)() / rnd->max()));
 }
 
+void SGStarInitializer::distibuteVertically(SGStar &star)
+{
+}
+
