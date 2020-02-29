@@ -29,16 +29,16 @@ public:
     using iterator = SGIterator;
 
     inline double
-    getRaiusCore() { return radiusCore; }
+    getRadiusCore() const { return radiusCore; }
 
     inline double
-    getRadiusDisk() { return radiusDisk; }
+    getRadiusDisk() const { return radiusDisk; }
 
     inline double
-    getEcctyInnerst() { return ecctyInnerst; }
+    getEcctyInnerst() const { return ecctyInnerst; }
 
     inline double
-    getEcctyOuterst() { return ecctyOuterst; }
+    getEcctyOuterst() const { return ecctyOuterst; }
 
     inline size_t
     getStarsQty() const override { return starsQty; }

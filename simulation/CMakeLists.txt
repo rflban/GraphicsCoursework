@@ -30,8 +30,6 @@ set(SRC
 
     src/SGVerticalDistributor.cc
     src/SGDiskRadiusDistributor.cc
-
-    src/MersenneTwisterGenerator.cc
 )
 
 add_library(simulation SHARED
