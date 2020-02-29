@@ -9,8 +9,7 @@
 #include "SGVerticalDistributor.h"
 #include "SGDiskRadiusDistributor.h"
 #include "MersenneTwisterGenerator.h"
-
-#define rnd() ((double)rand() / RAND_MAX)
+#include "SGStarInitializer.h"
 
 SpiralGalaxy::SpiralGalaxy(
             const Vector3D &pos,
@@ -18,7 +17,8 @@ SpiralGalaxy::SpiralGalaxy(
             double radiusDisk,
             double ecctyInnerst,
             double ecctyOuterst,
-            size_t starsQty
+            size_t starsQty,
+            Perturbation pert
         ) :
     pos(pos),
     radiusCore(radiusCore),
@@ -26,6 +26,7 @@ SpiralGalaxy::SpiralGalaxy(
     ecctyInnerst(ecctyInnerst),
     ecctyOuterst(ecctyOuterst),
     starsQty(starsQty),
+    pert(pert),
 
     stars(new SGStarDescriptor[starsQty]),
     stars_(new SGStar[starsQty])
@@ -47,6 +48,9 @@ void SpiralGalaxy::initStars()
     rd.setup();
     MersenneTwisterGenerator gen(time(NULL));
 
+    SGStarInitializer starInitializer(this);
+    starInitializer.setup();
+
     for (size_t i = 0; i < starsQty; i++)
     {
         stars[i].a = rd(gen);
@@ -54,19 +58,21 @@ void SpiralGalaxy::initStars()
                      stars[i].a *
                      (1 - pow(getEccentricity(stars[i].a), 2)));
 
-        stars[i].angularOffset = getAngularOffset(stars[i].a);
+        stars[i].angularOffset = getRotationAngle(stars[i].a);
 
         stars[i].azimuth = 2 * M_PI * ((double)gen() / gen.max());
         stars[i].zenith = 0;
         //stars[i].azimuth = 2 * M_PI * (double)rand() / RAND_MAX;
 
-        stars[i].brightness = 0.2 + 0.8 * rnd();
-        stars[i].brightness = 0.6 * exp(-stars[i].a / radiusDisk * 3) +
-                              0.1 + 0.3 * rnd();
+        //stars[i].brightness = 0.2 + 0.8 * rnd();
+        //stars[i].brightness = 0.6 * exp(-stars[i].a / radiusDisk * 3) +
+                              //0.1 + 0.3 * rnd();
+
+        starInitializer(stars_[i]);
     }
 }
 
-double SpiralGalaxy::getEccentricity(double radius)
+double SpiralGalaxy::getEccentricity(double radius) const
 {
     if (radius <= 0)
     {
@@ -94,7 +100,7 @@ double SpiralGalaxy::getEccentricity(double radius)
     }
 }
 
-double SpiralGalaxy::getAngularOffset(double radius)
+double SpiralGalaxy::getRotationAngle(double radius) const
 {
     if (radius <= 0)
     {
@@ -106,13 +112,13 @@ double SpiralGalaxy::getAngularOffset(double radius)
     }
     else if (radiusCore < radius && radius <= radiusDisk)
     {
-        return getAngularOffset(radiusCore) + (radius - radiusCore) /
+        return getRotationAngle(radiusCore) + (radius - radiusCore) /
                                               (radiusDisk - radiusCore) *
                                               M_PI;
     }
     else if (radiusDisk < radius && radius <= 2 * radiusDisk)
     {
-        return getAngularOffset(radiusDisk) + (radius - radiusDisk) /
+        return getRotationAngle(radiusDisk) + (radius - radiusDisk) /
                                               radiusDisk * M_PI;
     }
     else

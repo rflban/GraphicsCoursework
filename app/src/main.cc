@@ -8,6 +8,8 @@
 #include "PPMGenerator.h"
 
 #include "Geometry.h"
+
+#include "SGStar.h"
 #include "SpiralGalaxy.h"
 #include "GalaxyProperties.h"
 #include "SGOrbitCalculator.h"
@@ -20,17 +22,34 @@ void drawOrbit(Painter &painter, double a, double b, double angleOffset, const P
 
 int main()
 {
-    SpiralGalaxy galaxy({ 0, 0, 0 }, 3000, 20000, 0.45, 0.46, 25000);
+    FILE *fd;
+    ImageGenerator *generator = new PPMGenerator;
 
-    for (auto it = galaxy.begin(); it != galaxy.end(); ++it)
-    {
-    }
+    Pixmap p(900, 900);
+    Painter painter(&p);
+
+    painter.fillRect(0, 0, 900, 900, {0, 0, 0});
+    painter.setColor({255, 255, 255});
+
+    SpiralGalaxy galaxy({ 0, 0, 0 }, 3000, 20000, 0.45, 0.46, 25000, {4, 40});
+    double scale_ratio = 400.0 / 60000;
 
     for (auto celestial: galaxy)
     {
-        (SGCelestial)celestial;
+        auto s = *(SGStar *)celestial();
+
+        auto pos = SGOrbitCalculator::calculate(s.getA(), s.getB(), s.getRotationAngle(), {4, 40}, s.getAzimuth());
+
+        painter.fillPixel(450 + (size_t)round(pos.x * scale_ratio), 450 + (size_t)round(pos.y * scale_ratio));
     }
+
+    fd = fopen("stars.ppm", "w");
+    generator->generate(fd, p);
+    fclose(fd);
+
+    delete generator;
 }
+
 //int main()
 //{
     //srand(time(0));
@@ -207,11 +226,12 @@ void drawOrbit(Painter &painter, double a, double b, double angleOffset, const P
     double h = 1 / std::fmax(a, b);
     double pi_m_2 = 2 * M_PI;
 
-    SGOrbitCalculator calculator(a, b, angleOffset, pert);
+    //SGOrbitCalculator calculator(a, b, angleOffset, pert);
 
     for (double t = 0; t < pi_m_2; t += h)
     {
-        Vector2D pos = calculator.calculate(t);
+        //Vector2D pos = calculator.calculate(t);
+        Vector2D pos = SGOrbitCalculator::calculate(a, b, angleOffset, pert, t);
 
         painter.fillPixel(x0 + (size_t)round(pos.x), y0 + (size_t)round(pos.y));
     }

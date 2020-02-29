@@ -7,26 +7,12 @@ struct Perturbation;
 class SGOrbitCalculator
 {
 public:
-    SGOrbitCalculator(
-        double a, double b,
-        double angleOffset, const Perturbation &pert
-    );
-    ~SGOrbitCalculator();
-
-    Vector2D calculate(double angleOffset);
-
     static
     Vector2D calculate(
         double a, double b,
-        double angleOffset, const Perturbation &pert,
-        double polarAngle
+        double rotationAngle, const Perturbation &pert,
+        double azimuth
     );
-
-private:
-    double a;
-    double b;
-    double angleOffset;
-    Perturbation *pert;
 };
 
 #endif // GCW_SGORBITCALCULATOR_H_

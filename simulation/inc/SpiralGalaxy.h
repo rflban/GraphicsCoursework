@@ -2,6 +2,7 @@
 #define GCW_SPIRALGALAXY_H_
 
 #include "Galaxy.h"
+#include "GalaxyProperties.h"
 
 #include "SGCelestial.h"
 #include "SGObject.h"
@@ -22,7 +23,8 @@ public:
             double radiusDisk,
             double ecctyInnerst,
             double ecctyOuterst,
-            size_t starsQty
+            size_t starsQty,
+            Perturbation pert
     );
     ~SpiralGalaxy();
 
@@ -40,14 +42,17 @@ public:
     inline double
     getEcctyOuterst() const { return ecctyOuterst; }
 
+    inline Perturbation
+    getPert() const { return pert; }
+
     inline size_t
     getStarsQty() const override { return starsQty; }
 
     inline const SGStarDescriptor *
     getStars() { return stars; }
 
-    double getEccentricity(double radius);
-    double getAngularOffset(double radius);
+    double getEccentricity(double radius) const;
+    double getRotationAngle(double radius) const;
 
     iterator begin();
     iterator end();
@@ -66,6 +71,8 @@ private:
     double ecctyOuterst; // outermost ellipse eccentricity
 
     size_t starsQty; // stars quantity
+
+    Perturbation pert;
 
     SGStarDescriptor *stars;
     SGStar *stars_;

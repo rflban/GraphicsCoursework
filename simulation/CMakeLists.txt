@@ -24,6 +24,8 @@ set(SRC
     src/SGOrbitCalculator.cc
     src/SGObjectHandler.cc
 
+    src/SGStarInitializer.cc
+
     src/EGIntensityFunction.cc
     src/SGDiskIntensityFunction.cc
     src/SGIntensityFunction.cc

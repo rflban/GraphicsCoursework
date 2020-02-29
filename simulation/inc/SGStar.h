@@ -8,6 +8,31 @@ class SGStar : public SGObject
 public:
     void accept(SGObjectHandler &handler) override;
 
+    inline void setA(double a)
+    { this->a = a; }
+    inline double getA() const
+    { return a; }
+
+    inline void setB(double b)
+    { this->b = b; }
+    inline double getB() const
+    { return b; }
+
+    inline void setC(double c)
+    { this->c = c; }
+    inline double getC() const
+    { return c; }
+
+    inline void setRotationAngle(double alpha)
+    { this->rotationAngle = alpha; }
+    inline double getRotationAngle() const
+    { return rotationAngle; }
+
+    inline void setAzimuth(double alpha)
+    { this->azimuth = alpha; }
+    inline double getAzimuth() const
+    { return azimuth; }
+
 private:
     // semi-axis in SG disk plane, calculates by the de Vaucouleurs law
     double a;

@@ -20,3 +20,8 @@ void SGCelestial::accept(SGObjectHandler &handler)
     celestial->accept(handler);
 }
 
+SGObject *SGCelestial::operator()()
+{
+    return celestial;
+}
+

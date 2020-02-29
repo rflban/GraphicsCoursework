@@ -8,36 +8,43 @@
 
 #include "Random.h"
 
+#include <cmath>
+
 SGStarInitializer::SGStarInitializer() :
-    star(nullptr),
     galaxy(nullptr),
 
     rdistributor(nullptr),
-    vdistributor(nullptr)
+    vdistributor(nullptr),
+
+    rnd(new MersenneTwisterGenerator)
 {
 }
 
 SGStarInitializer::SGStarInitializer(const SpiralGalaxy *galaxy) :
-    star(nullptr),
     galaxy(galaxy),
 
     rdistributor(nullptr),
-    vdistributor(nullptr)
+    vdistributor(nullptr),
+
+    rnd(new MersenneTwisterGenerator)
 {
 }
 
 SGStarInitializer::SGStarInitializer(const SpiralGalaxy &galaxy) :
-    star(nullptr),
     galaxy(&galaxy),
 
     rdistributor(nullptr),
-    vdistributor(nullptr)
+    vdistributor(nullptr),
+
+    rnd(new MersenneTwisterGenerator)
 {
 }
 
 SGStarInitializer::~SGStarInitializer()
 {
     reset();
+
+    delete rnd;
 }
 
 bool SGStarInitializer::isReady()
@@ -63,12 +70,11 @@ void SGStarInitializer::setup()
     rdistributor = new SGDiskRadiusDistributor(
         1, rCore / 3, rDisk / 3, rCore, 0, rDisk + (rDisk - rCore), 1000
     );
+    rdistributor->setup();
 }
 
 void SGStarInitializer::reset()
 {
-    if (star)
-        star = nullptr;
     if (galaxy)
         galaxy = nullptr;
 
@@ -82,5 +88,22 @@ void SGStarInitializer::reset()
         delete vdistributor;
         vdistributor = nullptr;
     }
+}
+
+void SGStarInitializer::operator()(SGStar &star)
+{
+    distibuteOnDisk(star);
+}
+
+void SGStarInitializer::distibuteOnDisk(SGStar &star)
+{
+    double radius = (*rdistributor)(*rnd);
+
+    star.setA(radius);
+    star.setB(sqrt((radius * radius) *
+                   (1 - pow(galaxy->getEccentricity(radius), 2))));
+
+    star.setRotationAngle(galaxy->getRotationAngle(radius));
+    star.setAzimuth(2 * M_PI * ((double)(*rnd)() / rnd->max()));
 }
 

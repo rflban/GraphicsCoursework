@@ -13,9 +13,10 @@ public:
 
     void accept(SGObjectHandler &handler) override;
 
+    SGObject *operator()();
+
 private:
     SGObject *celestial;
-
 };
 
 #endif // GCW_SGCELESTIAL_H_

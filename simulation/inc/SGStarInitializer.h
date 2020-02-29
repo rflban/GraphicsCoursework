@@ -7,6 +7,8 @@ class SGStar;
 class SGDiskRadiusDistributor;
 class SGVerticalDistributor;
 
+class RandomGenerator;
+
 class SGStarInitializer
 {
 public:
@@ -22,11 +24,9 @@ public:
     bool isReady();
     operator bool();
 
-    inline void setStar(SGStar *star)
-    { this->star = star; }
+    void operator()(SGStar &star);
 
-    inline void resetStar()
-    { this->star = nullptr; }
+    void distibuteOnDisk(SGStar &star);
 
     inline void setGalaxy(const SpiralGalaxy *galaxy)
     { this->galaxy = galaxy; }
@@ -35,11 +35,12 @@ public:
     { this->galaxy = nullptr; }
 
 private:
-    SGStar *star;
     const SpiralGalaxy *galaxy;
 
     SGDiskRadiusDistributor *rdistributor;
     SGVerticalDistributor *vdistributor;
+
+    RandomGenerator *rnd;
 };
 
 #endif // GCW_SGSTARINITIALIZER_H_
