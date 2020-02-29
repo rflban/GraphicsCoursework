@@ -3,12 +3,16 @@
 
 #include "Galaxy.h"
 
+#include "SGCelestial.h"
+#include "SGObject.h"
+#include "SGStar.h"
+
 #include "SGIterator.h"
-#include "Geometry.h"
 #include "SGStarDescriptor.h"
 
-class SGObject;
+#include "Geometry.h"
 
+// Spiral Galaxy <=> SG
 class SpiralGalaxy : public Galaxy
 {
 public:
@@ -64,6 +68,7 @@ private:
     size_t starsQty; // stars quantity
 
     SGStarDescriptor *stars;
+    SGStar *stars_;
 
     void initStars();
 };

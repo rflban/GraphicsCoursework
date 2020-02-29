@@ -5,6 +5,7 @@
 
 class SpiralGalaxy;
 class SGObject;
+class SGCelestial;
 
 class SGIterator : public std::iterator<std::input_iterator_tag, SGObject>
 {
@@ -13,7 +14,7 @@ public:
 
     SGIterator &operator=(const SGIterator &it);
 
-    SGObject &operator*() const;
+    SGCelestial operator*() const;
     SGObject *operator->() const;
 
     SGIterator &operator++();

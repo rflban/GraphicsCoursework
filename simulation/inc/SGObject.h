@@ -6,7 +6,7 @@ class SGObjectHandler;
 class SGObject
 {
 public:
-    virtual inline void accept(SGObjectHandler &handler) = 0;
+    virtual void accept(SGObjectHandler &handler) = 0;
 
 };
 

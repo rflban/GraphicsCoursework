@@ -2,6 +2,7 @@
 
 #include "SpiralGalaxy.h"
 #include "SGObject.h"
+#include "SGCelestial.h"
 
 SGIterator::SGIterator(SpiralGalaxy *galaxy, ptrdiff_t idx) :
     idx(idx), galaxy(galaxy)
@@ -21,9 +22,9 @@ SGIterator &SGIterator::operator=(const SGIterator &it)
     return *this;
 }
 
-SGObject &SGIterator::operator*() const
+SGCelestial SGIterator::operator*() const
 {
-    return *galaxy->getObject(idx);
+    return SGCelestial(galaxy->getObject(idx));
 }
 
 SGObject *SGIterator::operator->() const

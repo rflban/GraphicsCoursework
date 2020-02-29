@@ -17,7 +17,12 @@ set(TSRC
 
 set(SRC
     src/SpiralGalaxy.cc
+    src/SGIterator.cc
+
+    src/SGCelestial.cc
+    src/SGStar.cc
     src/SGOrbitCalculator.cc
+    src/SGObjectHandler.cc
 
     src/EGIntensityFunction.cc
     src/SGDiskIntensityFunction.cc

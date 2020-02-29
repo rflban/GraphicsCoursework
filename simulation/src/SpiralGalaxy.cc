@@ -4,6 +4,7 @@
 #include <ctime>
 
 #include "SGIterator.h"
+#include "SGStar.h"
 
 #include "SGVerticalDistributor.h"
 #include "SGDiskRadiusDistributor.h"
@@ -26,7 +27,8 @@ SpiralGalaxy::SpiralGalaxy(
     ecctyOuterst(ecctyOuterst),
     starsQty(starsQty),
 
-    stars(new SGStarDescriptor[starsQty])
+    stars(new SGStarDescriptor[starsQty]),
+    stars_(new SGStar[starsQty])
 {
     initStars();
 }
@@ -34,6 +36,7 @@ SpiralGalaxy::SpiralGalaxy(
 SpiralGalaxy::~SpiralGalaxy()
 {
     delete[] stars;
+    delete[] stars_;
 }
 
 void SpiralGalaxy::initStars()
@@ -137,8 +140,7 @@ SGObject *SpiralGalaxy::getObject(ptrdiff_t idx)
 {
     if (0 <= idx && (size_t)idx < getStarsQty())
     {
-        return nullptr;
-        //return stars + idx;
+        return stars_ + idx;
     }
     else
     {
