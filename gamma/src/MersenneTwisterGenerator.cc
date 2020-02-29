@@ -1,5 +1,13 @@
 #include "MersenneTwisterGenerator.h"
 
+#include <ctime>
+
+MersenneTwisterGenerator::MersenneTwisterGenerator()
+{
+    baseGenerator = new std::mt19937;
+    this->seed(time(NULL));
+}
+
 MersenneTwisterGenerator::MersenneTwisterGenerator(unsigned int seed)
 {
     baseGenerator = new std::mt19937;
