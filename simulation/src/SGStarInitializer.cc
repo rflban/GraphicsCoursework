@@ -113,5 +113,19 @@ void SGStarInitializer::distibuteOnDisk(SGStar &star)
 
 void SGStarInitializer::distibuteVertically(SGStar &star)
 {
+    double v;
+    double r_p_2;
+    double rc_p_2;
+    double rm_p_2;
+
+    // r**2 / r_max**2 + v**2 / r_core**2 = 1
+
+    r_p_2 = star.getA() * star.getA() + star.getB() * star.getB();
+    rc_p_2 = galaxy->getRadiusCore() * galaxy->getRadiusCore();
+    rm_p_2 = pow(galaxy->getRadiusDisk() * 2 - galaxy->getRadiusCore(), 2);
+
+    v = sqrt(rc_p_2 * r_p_2 / rm_p_2);
+
+    star.setC((*ndistributor)(*rnd) * (v / galaxy->getRadiusCore()));
 }
 

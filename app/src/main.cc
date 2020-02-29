@@ -27,11 +27,11 @@ int main()
     Pixmap p(900, 900);
     Painter painter(&p);
 
-    painter.fillRect(0, 0, 900, 900, {0, 0, 0});
-    painter.setColor({255, 255, 255});
-
     SpiralGalaxy galaxy({ 0, 0, 0 }, 3000, 20000, 0.45, 0.46, 25000, {4, 40});
     double scale_ratio = 400.0 / 60000;
+
+    painter.setColor({255, 255, 255});
+    painter.fillRect(0, 0, 900, 900, {0, 0, 0});
 
     for (auto celestial: galaxy)
     {
@@ -43,6 +43,21 @@ int main()
     }
 
     fd = fopen("stars.ppm", "w");
+    generator->generate(fd, p);
+    fclose(fd);
+
+    painter.fillRect(0, 0, 900, 900, {0, 0, 0});
+
+    for (auto celestial: galaxy)
+    {
+        auto s = *(SGStar *)celestial();
+
+        auto pos = SGOrbitCalculator::calculate(s.getA(), s.getB(), s.getRotationAngle(), {4, 40}, s.getAzimuth());
+
+        painter.fillPixel(450 + (size_t)round(pos.x * scale_ratio), 450 + (size_t)round(s.getC() * scale_ratio));
+    }
+
+    fd = fopen("xz.ppm", "w");
     generator->generate(fd, p);
     fclose(fd);
 
