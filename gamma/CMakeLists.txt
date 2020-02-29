@@ -21,6 +21,7 @@ set(INC
     inc/Random.h
 
     inc/Distributor.h
+    inc/NormalDistributor.h
 
     inc/RandomGenerator.h
     inc/MersenneTwisterGenerator.h
@@ -32,6 +33,7 @@ set(TSRC
 set(SRC
     src/SimpsonsRuleIntegrator.cc
     src/MersenneTwisterGenerator.cc
+    src/NormalDistributor.cc
 )
 
 add_library(gamma SHARED
