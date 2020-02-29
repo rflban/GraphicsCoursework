@@ -4,7 +4,7 @@
 #include "SGStar.h"
 
 #include "SGDiskRadiusDistributor.h"
-#include "SGVerticalDistributor.h"
+#include "NormalDistributor.h"
 
 #include "Random.h"
 
@@ -14,7 +14,7 @@ SGStarInitializer::SGStarInitializer() :
     galaxy(nullptr),
 
     rdistributor(nullptr),
-    vdistributor(nullptr),
+    ndistributor(nullptr),
 
     rnd(new MersenneTwisterGenerator)
 {
@@ -24,7 +24,7 @@ SGStarInitializer::SGStarInitializer(const SpiralGalaxy *galaxy) :
     galaxy(galaxy),
 
     rdistributor(nullptr),
-    vdistributor(nullptr),
+    ndistributor(nullptr),
 
     rnd(new MersenneTwisterGenerator)
 {
@@ -34,7 +34,7 @@ SGStarInitializer::SGStarInitializer(const SpiralGalaxy &galaxy) :
     galaxy(&galaxy),
 
     rdistributor(nullptr),
-    vdistributor(nullptr),
+    ndistributor(nullptr),
 
     rnd(new MersenneTwisterGenerator)
 {
@@ -49,7 +49,7 @@ SGStarInitializer::~SGStarInitializer()
 
 bool SGStarInitializer::isReady()
 {
-    return !(galaxy && rdistributor && vdistributor);
+    return !(galaxy && rdistributor && ndistributor);
 }
 
 SGStarInitializer::operator bool()
@@ -66,11 +66,14 @@ void SGStarInitializer::setup()
 
     double rCore = galaxy->getRadiusCore();
     double rDisk = galaxy->getRadiusDisk();
+    double rMax = rDisk + (rDisk - rCore);
 
     rdistributor = new SGDiskRadiusDistributor(
-        1, rCore / 3, rDisk / 3, rCore, 0, rDisk + (rDisk - rCore), 1000
+        1, rCore / 3, rDisk / 3, rCore, 0, rMax, 1000
     );
     rdistributor->setup();
+
+    ndistributor = new NormalDistributor(0, rCore / 3);
 }
 
 void SGStarInitializer::reset()
@@ -83,16 +86,17 @@ void SGStarInitializer::reset()
         delete rdistributor;
         rdistributor = nullptr;
     }
-    if (vdistributor)
+    if (ndistributor)
     {
-        delete vdistributor;
-        vdistributor = nullptr;
+        delete ndistributor;
+        ndistributor = nullptr;
     }
 }
 
 void SGStarInitializer::operator()(SGStar &star)
 {
     distibuteOnDisk(star);
+    distibuteVertically(star);
 }
 
 void SGStarInitializer::distibuteOnDisk(SGStar &star)

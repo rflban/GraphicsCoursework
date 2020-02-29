@@ -5,7 +5,7 @@ class SpiralGalaxy;
 class SGStar;
 
 class SGDiskRadiusDistributor;
-class SGVerticalDistributor;
+class NormalDistributor;
 
 class RandomGenerator;
 
@@ -39,7 +39,7 @@ private:
     const SpiralGalaxy *galaxy;
 
     SGDiskRadiusDistributor *rdistributor;
-    SGVerticalDistributor *vdistributor;
+    NormalDistributor *ndistributor;
 
     RandomGenerator *rnd;
 };
