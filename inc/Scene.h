@@ -14,6 +14,7 @@ public:
     ~Scene();
 
     void render(InputBuffer &buffer);
+    void rotateCamera(double, double);
 
 private:
     SpiralGalaxy *galaxy;

@@ -5,6 +5,7 @@ class ViewObserver
 {
 public:
     virtual void renderFrame() = 0;
+    virtual void rotateCamera(double deltaT, double deltaP) = 0;
 
 protected:
 

@@ -16,6 +16,7 @@ public:
     void setView(View *view);
 
     void renderFrame() override;
+    void rotateCamera(double, double) override;
 
 private:
     Scene *scene;

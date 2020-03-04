@@ -20,3 +20,11 @@ void View::frameRequested()
     notify(&ViewObserver::renderFrame);
 }
 
+void View::cameraRotationRequested(double deltaT, double deltaP)
+{
+    for (ViewObserver *observer: observers)
+    {
+        observer->rotateCamera(deltaT, deltaP);
+    }
+}
+

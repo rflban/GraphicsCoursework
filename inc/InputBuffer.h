@@ -14,6 +14,8 @@ public:
                           unsigned char g,
                           unsigned char b,
                           unsigned char a = 255) = 0;
+
+    virtual void reset() = 0;
 };
 
 #endif // GCW_INPUTBUFFER_H_

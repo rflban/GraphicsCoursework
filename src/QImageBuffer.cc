@@ -14,3 +14,8 @@ void QImageBuffer::setPixel(int x, int y,
     image->setPixelColor(x, y, QColor(r, g, b, a));
 }
 
+void QImageBuffer::reset()
+{
+    image->fill(QColor(0, 0, 0));
+}
+

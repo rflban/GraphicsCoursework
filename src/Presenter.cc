@@ -3,6 +3,8 @@
 #include "View.h"
 #include "InputBuffer.h"
 
+#include "Scene.h"
+
 #include <QDebug>
 
 Presenter::Presenter(Scene *scene) :
@@ -19,16 +21,17 @@ void Presenter::renderFrame()
 {
     InputBuffer *buffer = view->getInputBuffer();
 
-    for (int i = 0; i < buffer->width(); i++)
-    {
-        for (int j = 0; j < buffer->height(); j++)
-            buffer->setPixel(i, j, 255, 0, 0);
-    }
+    scene->render(*buffer);
 
     qDebug() << "frame rendering";
 
     view->updateOutputBuffer();
 
     delete buffer;
+}
+
+void Presenter::rotateCamera(double deltaT, double deltaP)
+{
+    scene->rotateCamera(deltaT, deltaP);
 }
 

@@ -20,6 +20,8 @@ public:
                   unsigned char b,
                   unsigned char a = 255);
 
+    void reset() override;
+
 private:
     QImage *image;
 

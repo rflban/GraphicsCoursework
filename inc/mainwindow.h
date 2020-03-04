@@ -23,6 +23,7 @@ public:
     InputBuffer *getInputBuffer() override;
 
 protected:
+    void keyPressEvent(QKeyEvent *) override;
 
 private:
     Ui::MainWindow *ui;

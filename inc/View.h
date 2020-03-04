@@ -16,6 +16,7 @@ public:
 
 protected:
     void frameRequested();
+    void cameraRotationRequested(double deltaT, double deltaP);
 
 private:
     void notify(void (ViewObserver::*respond)());
