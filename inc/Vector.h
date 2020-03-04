@@ -1,6 +1,10 @@
 #ifndef GCW_VECTOR_H_
 #define GCW_VECTOR_H_
 
+class Vector2d;
+class Vector3d;
+class Vector4d;
+
 class Matrix4d;
 
 class Vector2d
@@ -34,6 +38,7 @@ class Vector3d
 public:
     Vector3d(double x=0, double y=0, double z=0);
     Vector3d(const Vector3d &other);
+    Vector3d(const Vector4d &other);
 
     Vector3d &operator=(const Vector3d &other);
 
@@ -47,7 +52,8 @@ public:
     Vector3d operator*(double num);
     Vector3d operator/(double num);
 
-    Vector3d operator*(const Vector3d &other);
+    Vector3d operator*(const Vector3d &other); // cross
+    double operator&(const Vector3d &other); // dot
 
     Vector3d &normalize();
 

@@ -16,7 +16,9 @@ public:
 
 protected:
     void frameRequested();
-    void cameraRotationRequested(double deltaT, double deltaP);
+    void cameraScalingRequested(double, double, double);
+    void cameraRotationRequested(double, double, double);
+    void cameraTranslationRequested(double, double, double);
 
 private:
     void notify(void (ViewObserver::*respond)());

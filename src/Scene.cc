@@ -51,8 +51,18 @@ void Scene::render(InputBuffer &buffer)
     }
 }
 
-void Scene::rotateCamera(double deltaTheta, double delatPhi)
+void Scene::scaleCamera(double rx, double ry, double rz)
 {
-    viewer.rotateArroundCenter(deltaTheta, delatPhi);
+    viewer.scale(rx, ry, rz);
+}
+
+void Scene::rotateCamera(double ax, double ay, double az)
+{
+    viewer.rotate(ax, ay, az);
+}
+
+void Scene::translateCamera(double dx, double dy, double dz)
+{
+    viewer.translate(dx, dy, dz);
 }
 

@@ -5,7 +5,10 @@ class ViewObserver
 {
 public:
     virtual void renderFrame() = 0;
-    virtual void rotateCamera(double deltaT, double deltaP) = 0;
+
+    virtual void scaleCamera(double, double, double) = 0;
+    virtual void rotateCamera(double, double, double) = 0;
+    virtual void translateCamera(double, double, double) = 0;
 
 protected:
 

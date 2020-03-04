@@ -33,6 +33,7 @@ set(INC
     inc/Vector.h
     inc/Matrix.h
     inc/InputBuffer.h
+    inc/Affine.h
 
     inc/Container.h
 

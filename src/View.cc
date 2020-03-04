@@ -20,11 +20,27 @@ void View::frameRequested()
     notify(&ViewObserver::renderFrame);
 }
 
-void View::cameraRotationRequested(double deltaT, double deltaP)
+void View::cameraScalingRequested(double rx, double ry, double rz)
 {
     for (ViewObserver *observer: observers)
     {
-        observer->rotateCamera(deltaT, deltaP);
+        observer->scaleCamera(rx, ry, rz);
+    }
+}
+
+void View::cameraRotationRequested(double ax, double ay, double az)
+{
+    for (ViewObserver *observer: observers)
+    {
+        observer->rotateCamera(ax, ay, az);
+    }
+}
+
+void View::cameraTranslationRequested(double dx, double dy, double dz)
+{
+    for (ViewObserver *observer: observers)
+    {
+        observer->translateCamera(dx, dy, dz);
     }
 }
 

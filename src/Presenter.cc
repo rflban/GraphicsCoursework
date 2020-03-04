@@ -30,8 +30,18 @@ void Presenter::renderFrame()
     delete buffer;
 }
 
-void Presenter::rotateCamera(double deltaT, double deltaP)
+void Presenter::scaleCamera(double rx, double ry, double rz)
 {
-    scene->rotateCamera(deltaT, deltaP);
+    scene->scaleCamera(rx, ry, rz);
+}
+
+void Presenter::rotateCamera(double ax, double ay, double az)
+{
+    scene->rotateCamera(ax, ay, az);
+}
+
+void Presenter::translateCamera(double dx, double dy, double dz)
+{
+    scene->translateCamera(dx, dy, dz);
 }
 

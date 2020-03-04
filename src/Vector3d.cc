@@ -12,6 +12,11 @@ Vector3d::Vector3d(const Vector3d &other) :
 {
 }
 
+Vector3d::Vector3d(const Vector4d &other) :
+    x(other.x), y(other.y), z(other.z)
+{
+}
+
 Vector3d &Vector3d::operator=(const Vector3d &other)
 {
     x = other.x;
@@ -93,6 +98,11 @@ Vector3d Vector3d::operator*(const Vector3d &other)
     v.z = x * other.y - y * other.x;
 
     return v;
+}
+
+double Vector3d::operator&(const Vector3d &other)
+{
+    return x * other.x + y * other.y + z * other.z;
 }
 
 Vector3d &Vector3d::normalize()

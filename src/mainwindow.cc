@@ -40,28 +40,62 @@ InputBuffer *MainWindow::getInputBuffer()
                             ui->display->width(),
                             ui->display->height());
 }
-#include <QDebug>
+
 void MainWindow::keyPressEvent(QKeyEvent *event)
 {
     int key = event->key();
+
     double step = M_PI / 120;
+    double ratio = 1.05;
+    double h = 500;
 
     if (key == Qt::Key_Right)
     {
-        cameraRotationRequested(+step, 0);
+        cameraRotationRequested(0, +step, 0);
     }
     if (key == Qt::Key_Left)
     {
-        cameraRotationRequested(-step, 0);
+        cameraRotationRequested(0, -step, 0);
     }
     if (key == Qt::Key_Up)
     {
-        cameraRotationRequested(0, +step*10);
+        cameraRotationRequested(+step, 0, 0);
     }
     if (key == Qt::Key_Down)
     {
-        cameraRotationRequested(0, -step*10);
+        cameraRotationRequested(-step, 0, 0);
     }
-    frameRequested();
+    if (key == Qt::Key_Equal)
+    {
+        cameraScalingRequested(1/ratio, 1/ratio, 1/ratio);
+    }
+    if (key == Qt::Key_Minus)
+    {
+        cameraScalingRequested(ratio, ratio, ratio);
+    }
+    if (key == Qt::Key_W)
+    {
+        cameraTranslationRequested(0, 0, -h);
+    }
+    if (key == Qt::Key_S)
+    {
+        cameraTranslationRequested(0, 0, h);
+    }
+    if (key == Qt::Key_D)
+    {
+        cameraTranslationRequested(h, 0, 0);
+    }
+    if (key == Qt::Key_A)
+    {
+        cameraTranslationRequested(-h, 0, 0);
+    }
+    if (key == Qt::Key_E)
+    {
+        cameraTranslationRequested(0, -h, 0);
+    }
+    if (key == Qt::Key_Q)
+    {
+        cameraTranslationRequested(0, h, 0);
+    }
 }
 

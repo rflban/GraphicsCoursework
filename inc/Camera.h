@@ -13,7 +13,9 @@ public:
 
     Matrix4d operator()();
 
-    void rotateArroundCenter(double deltaTheta, double delatPhi);
+    void scale(double rx, double ry, double rz);
+    void rotate(double ax, double ay, double az);
+    void translate(double dx, double dy, double dz);
 
 private:
     Vector3d from;

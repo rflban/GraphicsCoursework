@@ -1,6 +1,7 @@
 #include "Camera.h"
 
 #include <cmath>
+#include "Affine.h"
 
 Camera::Camera(Vector3d from, Vector3d to, Vector3d up) :
     from(from), to(to), up(up)
@@ -11,8 +12,7 @@ Matrix4d Camera::operator()()
 {
     Vector3d foward = (from - to).normalize();
     Vector3d right = up * foward;
-
-    up = (foward * right).normalize();
+    Vector3d up = (foward * right).normalize();
 
     return Matrix4d({
         right.x,  right.y,  right.z,  0,
@@ -22,55 +22,40 @@ Matrix4d Camera::operator()()
     });
 }
 
-void Camera::rotateArroundCenter(double deltaTheta, double deltaPhi)
+void Camera::scale(double rx, double ry, double rz)
 {
-    double theta;
-    double phi;
-    double r = (from - to).len();
-
-    int signx = 1;
-    if (from.x < 0)
+    if (rx != 0 && ry != 0 && rz != 0)
     {
-        signx = -1;
+        from = Vector4d(from) * scaling(rx, ry, rz);
+    }
+}
+
+void Camera::rotate(double ax, double ay, double az)
+{
+    if (ax != 0)
+    {
+        from = Vector4d(from) * rotationX(ax);
+        up = Vector4d(up) * rotationX(ax);
     }
 
-    int signz = 1;
-    if (from.z < 0)
+    if (ay != 0)
     {
-        signz = -1;
+        from = Vector4d(from) * rotationY(ay);
+        up = Vector4d(up) * rotationY(ay);
     }
 
-    if (from.z == 0)
+    if (az != 0)
     {
-        theta = 0;
+        from = Vector4d(from) * rotationZ(az);
+        up = Vector4d(up) * rotationZ(az);
     }
-    else
+}
+
+void Camera::translate(double dx, double dy, double dz)
+{
+    if (dx != 0 || dy != 0 || dz != 0)
     {
-        theta = atan(sqrt(from.x * from.x + from.y * from.y) / from.z) * signx;
+        from = Vector4d(from) * translation(dx, dy, dz);
     }
-
-    if (from.x == 0)
-    {
-        phi = 0;
-    }
-    else
-    {
-        phi = atan(from.y / from.x) * signz;
-    }
-
-    theta += deltaTheta;
-    phi += deltaPhi;
-
-    from.x = r * sin(theta) * cos(phi);
-    from.y = r * sin(theta) * sin(phi);
-    from.z = r * cos(theta);
-
-    double x1 = to.x;
-    double y1 = to.y * cos(theta) - to.z * sin(theta);
-    double z1 = to.y * sin(theta) + to.z * cos(theta);
-
-    to.x = +x1 * cos(theta) + z1 * sin(theta);
-    to.y = +y1;
-    to.z = -x1 * sin(theta) + z1 * cos(theta);
 }
 
