@@ -6,6 +6,8 @@
 class Galaxy
 {
 public:
+    ~Galaxy() = default;
+
     virtual inline size_t
     getStarsQty() const = 0;
 
