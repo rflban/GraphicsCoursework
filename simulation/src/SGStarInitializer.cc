@@ -97,6 +97,7 @@ void SGStarInitializer::operator()(SGStar &star)
 {
     distibuteOnDisk(star);
     distibuteVertically(star);
+    distibuteVelocity(star);
 }
 
 void SGStarInitializer::distibuteOnDisk(SGStar &star)
@@ -128,5 +129,36 @@ void SGStarInitializer::distibuteVertically(SGStar &star)
     v = sqrt(rc_p_2 * r_p_2 / rm_p_2);
 
     star.setC((*ndistributor)(*rnd) * (v / galaxy->getRadiusCore()));
+}
+
+void SGStarInitializer::distibuteVelocity(SGStar &star)
+{
+    double G = 6.672e-11;
+    double r = sqrt(star.getA() * star.getA() +
+                    star.getB() * star.getB());
+
+    double vel_kms = (galaxy->getRadiusDisk() - galaxy->getRadiusCore()) *
+                     sqrt(G * (massGalaxy(r) + massDarkMatter(r)) / r);
+
+    double t = 2 * M_PI * r * 3.08567758129e13 / (vel_kms * 365.25 * 86400);
+
+    star.setVelocity(2 * M_PI / t);
+}
+
+double SGStarInitializer::massGalaxy(double r)
+{
+    double thickness = galaxy->getRadiusCore() / 2;
+    double centerDensity = 1;
+    double halfDensityRadius = galaxy->getRadiusCore();
+
+    return centerDensity*exp(-r / halfDensityRadius) * r*r*M_PI * thickness;
+}
+
+double SGStarInitializer::massDarkMatter(double r)
+{
+    double centerHaloDensity = 0.15;
+    double haloRadius = 0.75 * galaxy->getRadiusCore();
+
+    return centerHaloDensity * 1/(1 + pow(r / haloRadius, 2)) * 4*M_PI*pow(r, 3)/3;
 }
 

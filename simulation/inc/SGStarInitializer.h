@@ -28,6 +28,7 @@ public:
 
     void distibuteOnDisk(SGStar &star);
     void distibuteVertically(SGStar &star);
+    void distibuteVelocity(SGStar &star);
 
     inline void setGalaxy(const SpiralGalaxy *galaxy)
     { this->galaxy = galaxy; }
@@ -36,6 +37,9 @@ public:
     { this->galaxy = nullptr; }
 
 private:
+    double massGalaxy(double r);
+    double massDarkMatter(double r);
+
     const SpiralGalaxy *galaxy;
 
     SGDiskRadiusDistributor *rdistributor;

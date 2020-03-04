@@ -130,3 +130,12 @@ SGObject *SpiralGalaxy::getObject(ptrdiff_t idx)
     }
 }
 
+void SpiralGalaxy::timeStep(double t)
+{
+    for (int i = 0; i < starsQty; i++)
+    {
+        stars[i].setAzimuth(stars[i].getAzimuth() +
+                            t * stars[i].getVelocity());
+    }
+}
+

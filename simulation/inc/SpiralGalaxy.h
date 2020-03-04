@@ -60,6 +60,8 @@ public:
 
     bool isExistingObject(ptrdiff_t idx) const;
 
+    void timeStep(double t);
+
 private:
     Vector3D pos;
 

@@ -47,7 +47,7 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
 
     double step = M_PI / 120;
     double ratio = 1.05;
-    double h = 500;
+    double h = 1000;
 
     if (key == Qt::Key_Right)
     {

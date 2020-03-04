@@ -33,6 +33,11 @@ public:
     inline double getAzimuth() const
     { return azimuth; }
 
+    inline void setVelocity(double velocity)
+    { this->velocity = velocity; }
+    inline double getVelocity()
+    { return velocity; }
+
 private:
     // semi-axis in SG disk plane, calculates by the de Vaucouleurs law
     double a;
@@ -47,6 +52,8 @@ private:
 
     // current angular position of star in SG disk plane
     double azimuth;
+
+    double velocity;
 };
 
 #endif // GCW_SGSTAR_H_

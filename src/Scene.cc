@@ -24,6 +24,8 @@ Scene::~Scene()
 
 void Scene::render(InputBuffer &buffer)
 {
+    galaxy->timeStep(1000000);
+
     buffer.reset();
 
     for (auto celestial: *galaxy)
