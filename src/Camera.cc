@@ -12,10 +12,10 @@ Matrix4d Camera::operator()()
     Vector3d up = (foward * right).normalize();
 
     return Matrix4d({
-            right.x,  right.y,  right.z,  0,
-            up.x,     up.y,     up.z,     0,
-            foward.x, foward.y, foward.z, 0,
-            from.x,   from.y,   from.z,   1
+        right.x,  right.y,  right.z,  0,
+        up.x,     up.y,     up.z,     0,
+        foward.x, foward.y, foward.z, 0,
+        from.x,   from.y,   from.z,   1
     });
 }
 

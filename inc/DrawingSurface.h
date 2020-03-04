@@ -11,19 +11,14 @@ public:
     explicit DrawingSurface(QWidget *parent = nullptr);
     ~DrawingSurface();
 
+    QImage &getInputBuffer();
+    void updateOutputBuffer();
+
 protected:
     void paintEvent(QPaintEvent *event) override;
     void resizeEvent(QResizeEvent *event) override;
 
 private:
-    struct Color
-    {
-        unsigned char r = 0;
-        unsigned char g = 0;
-        unsigned char b = 0;
-        unsigned char a = 1;
-    };
-
     QPixmap outputBuffer;
     QImage inputBuffer;
 };

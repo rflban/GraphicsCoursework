@@ -4,6 +4,7 @@
 class ViewObserver
 {
 public:
+    virtual void renderFrame() = 0;
 
 protected:
 

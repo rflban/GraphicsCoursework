@@ -15,3 +15,8 @@ void View::notify(void (ViewObserver::*respond)())
     }
 }
 
+void View::frameRequested()
+{
+    notify(&ViewObserver::renderFrame);
+}
+

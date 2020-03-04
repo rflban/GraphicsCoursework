@@ -6,14 +6,20 @@
 #include "Container.h"
 
 class View;
+class Scene;
 
 class Presenter : public ViewObserver
 {
 public:
-    void addView(View *view);
+    Presenter(Scene *scene);
+
+    void setView(View *view);
+
+    void renderFrame() override;
 
 private:
-    Container<View *> views;
+    Scene *scene;
+    View *view;
 };
 
 #endif // GCW_PRESENTER_H_

@@ -22,10 +22,23 @@ void DrawingSurface::paintEvent(QPaintEvent *)
 {
     QPainter painter(this);
 
-    painter.drawPixmap(0, 0, width(), height(), outputBuffer);
+    painter.drawPixmap(0, 0, outputBuffer.width(), outputBuffer.height(), outputBuffer);
 }
 
 void DrawingSurface::resizeEvent(QResizeEvent *)
 {
+}
+
+QImage &DrawingSurface::getInputBuffer()
+{
+    inputBuffer = outputBuffer.toImage();
+
+    return inputBuffer;
+}
+
+void DrawingSurface::updateOutputBuffer()
+{
+    outputBuffer = QPixmap::fromImage(inputBuffer);
+    update();
 }
 

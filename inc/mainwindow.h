@@ -2,6 +2,7 @@
 #define GCW_MAINWINDOW_H_
 
 #include <QMainWindow>
+#include <QTimer>
 
 #include "View.h"
 
@@ -18,9 +19,17 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
     virtual ~MainWindow();
 
+    void updateOutputBuffer() override;
+    InputBuffer *getInputBuffer() override;
+
+protected:
+
 private:
     Ui::MainWindow *ui;
+    QTimer *frameTimer;
 
+private slots:
+    void requestFrame();
 };
 
 #endif // GCW_MAINWINDOW_H_

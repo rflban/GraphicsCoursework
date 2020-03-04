@@ -25,6 +25,14 @@ set(INC
 
     inc/mainwindow.h
     inc/DrawingSurface.h
+    inc/QImageBuffer.h
+
+    inc/Scene.h
+    inc/Camera.h
+    inc/PerspectiveCube.h
+    inc/Vector.h
+    inc/Matrix.h
+    inc/InputBuffer.h
 
     inc/Container.h
 
@@ -39,6 +47,15 @@ set(SRC
 
     src/mainwindow.cc
     src/DrawingSurface.cc
+    src/QImageBuffer.cc
+
+    src/Scene.cc
+    src/Camera.cc
+    src/PerspectiveCube.cc
+    src/Vector2d.cc
+    src/Vector3d.cc
+    src/Vector4d.cc
+    src/Matrix4d.cc
 )
 
 set(FRM
