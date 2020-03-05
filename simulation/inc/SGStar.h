@@ -38,6 +38,16 @@ public:
     inline double getVelocity()
     { return velocity; }
 
+    inline void setTemperature(double temperature)
+    { this->temperature = temperature; }
+    inline double getTemperature()
+    { return temperature; }
+
+    inline void setColorRatio(double colorRatio)
+    { this->colorRatio = colorRatio; }
+    inline double getColorRatio()
+    { return colorRatio; }
+
 private:
     // semi-axis in SG disk plane, calculates by the de Vaucouleurs law
     double a;
@@ -54,6 +64,9 @@ private:
     double azimuth;
 
     double velocity;
+
+    double temperature;
+    double colorRatio;
 };
 
 #endif // GCW_SGSTAR_H_

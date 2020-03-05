@@ -21,6 +21,9 @@ public:
     void rotateCamera(double, double, double) override;
     void translateCamera(double, double, double) override;
 
+    void updateVelocity(double) override;
+    void updateParticle(int) override;
+
 private:
     Scene *scene;
     View *view;

@@ -10,6 +10,9 @@ public:
     virtual void rotateCamera(double, double, double) = 0;
     virtual void translateCamera(double, double, double) = 0;
 
+    virtual void updateVelocity(double) = 0;
+    virtual void updateParticle(int) = 0;
+
 protected:
 
 private:

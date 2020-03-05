@@ -9,6 +9,8 @@ public:
     Matrix4d();
     Matrix4d(std::initializer_list<double> l);
 
+    Matrix4d operator*(const Matrix4d &m);
+
     double data[4][4];
 };
 

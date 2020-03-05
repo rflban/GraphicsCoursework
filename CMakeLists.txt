@@ -38,6 +38,9 @@ set(INC
     inc/Container.h
 
     inc/Utility.h
+
+
+    inc/other/specrend.h
 )
 
 set(SRC
@@ -57,6 +60,9 @@ set(SRC
     src/Vector3d.cc
     src/Vector4d.cc
     src/Matrix4d.cc
+
+
+    src/other/specrend.cpp
 )
 
 set(FRM
@@ -81,6 +87,9 @@ target_include_directories(sgrenderer
         "imagegenerator/inc"
         "simulation/inc"
         "gamma/inc"
+
+
+        "inc/other"
 )
 
 target_link_libraries(sgrenderer

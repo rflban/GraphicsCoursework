@@ -31,6 +31,9 @@ private:
 
 private slots:
     void requestFrame();
+
+    void modifyVelocity();
+    void modifyParticle();
 };
 
 #endif // GCW_MAINWINDOW_H_

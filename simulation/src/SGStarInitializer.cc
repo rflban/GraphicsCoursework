@@ -98,6 +98,7 @@ void SGStarInitializer::operator()(SGStar &star)
     distibuteOnDisk(star);
     distibuteVertically(star);
     distibuteVelocity(star);
+    distibuteTemperature(star);
 }
 
 void SGStarInitializer::distibuteOnDisk(SGStar &star)
@@ -160,5 +161,16 @@ double SGStarInitializer::massDarkMatter(double r)
     double haloRadius = 0.75 * galaxy->getRadiusCore();
 
     return centerHaloDensity * 1/(1 + pow(r / haloRadius, 2)) * 4*M_PI*pow(r, 3)/3;
+}
+
+void SGStarInitializer::distibuteTemperature(SGStar &star)
+{
+    double r = sqrt(star.getA() * star.getA() +
+                    star.getB() * star.getB());
+    double k = r/galaxy->getRadiusDisk();
+
+    star.setTemperature(4000 + 6000 * (0.9*(double)(*rnd)()/rnd->max() + 0.1*k));
+    //star.setTemperature(4000 + 6000 * (1 - r/galaxy->getRadiusDisk()));
+    star.setColorRatio(0.7 + 0.2 * ((double)(*rnd)() / rnd->max()));
 }
 

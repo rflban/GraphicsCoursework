@@ -44,3 +44,19 @@ void View::cameraTranslationRequested(double dx, double dy, double dz)
     }
 }
 
+void View::velocityModified(double vel)
+{
+    for (ViewObserver *observer: observers)
+    {
+        observer->updateVelocity(vel);
+    }
+}
+
+void View::particleModified(int qty)
+{
+    for (ViewObserver *observer: observers)
+    {
+        observer->updateParticle(qty);
+    }
+}
+

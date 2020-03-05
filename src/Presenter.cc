@@ -5,8 +5,6 @@
 
 #include "Scene.h"
 
-#include <QDebug>
-
 Presenter::Presenter(Scene *scene) :
     scene(scene)
 {
@@ -22,8 +20,6 @@ void Presenter::renderFrame()
     InputBuffer *buffer = view->getInputBuffer();
 
     scene->render(*buffer);
-
-    qDebug() << "frame rendering";
 
     view->updateOutputBuffer();
 
@@ -43,5 +39,15 @@ void Presenter::rotateCamera(double ax, double ay, double az)
 void Presenter::translateCamera(double dx, double dy, double dz)
 {
     scene->translateCamera(dx, dy, dz);
+}
+
+void Presenter::updateVelocity(double vel)
+{
+    scene->setVel(vel);
+}
+
+void Presenter::updateParticle(int qty)
+{
+    scene->resetGalaxy(qty);
 }
 

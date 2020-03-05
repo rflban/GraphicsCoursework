@@ -14,6 +14,16 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    ui->particleSlider->setRange(100, 30000);
+    ui->particleSlider->setTickInterval(1);
+    ui->particleSlider->setSliderPosition(25000);
+    connect(ui->particleSlider, SIGNAL(valueChanged(int)), this, SLOT(modifyParticle()));
+
+    ui->velocitySlider->setRange(20000, 25000);
+    ui->velocitySlider->setTickInterval(1);
+    ui->velocitySlider->setSliderPosition(22500);
+    connect(ui->velocitySlider, SIGNAL(valueChanged(int)), this, SLOT(modifyVelocity()));
+
     connect(frameTimer, SIGNAL(timeout()), this, SLOT(requestFrame()));
     frameTimer->start(1000 / 24);
 }
@@ -47,24 +57,7 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
 
     double step = M_PI / 120;
     double ratio = 1.05;
-    double h = 1000;
 
-    if (key == Qt::Key_Right)
-    {
-        cameraRotationRequested(0, +step, 0);
-    }
-    if (key == Qt::Key_Left)
-    {
-        cameraRotationRequested(0, -step, 0);
-    }
-    if (key == Qt::Key_Up)
-    {
-        cameraRotationRequested(+step, 0, 0);
-    }
-    if (key == Qt::Key_Down)
-    {
-        cameraRotationRequested(-step, 0, 0);
-    }
     if (key == Qt::Key_Equal)
     {
         cameraScalingRequested(1/ratio, 1/ratio, 1/ratio);
@@ -75,27 +68,37 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
     }
     if (key == Qt::Key_W)
     {
-        cameraTranslationRequested(0, 0, -h);
+        cameraRotationRequested(0, 0, +step);
     }
     if (key == Qt::Key_S)
     {
-        cameraTranslationRequested(0, 0, h);
+        cameraRotationRequested(0, 0, -step);
     }
     if (key == Qt::Key_D)
     {
-        cameraTranslationRequested(h, 0, 0);
+        cameraRotationRequested(0, +step, 0);
     }
     if (key == Qt::Key_A)
     {
-        cameraTranslationRequested(-h, 0, 0);
+        cameraRotationRequested(0, -step, 0);
     }
     if (key == Qt::Key_E)
     {
-        cameraTranslationRequested(0, -h, 0);
+        cameraRotationRequested(+step, 0, 0);
     }
     if (key == Qt::Key_Q)
     {
-        cameraTranslationRequested(0, h, 0);
+        cameraRotationRequested(-step, 0, 0);
     }
+}
+
+void MainWindow::modifyVelocity()
+{
+    velocityModified(ui->velocitySlider->sliderPosition());
+}
+
+void MainWindow::modifyParticle()
+{
+    particleModified(ui->particleSlider->sliderPosition());
 }
 

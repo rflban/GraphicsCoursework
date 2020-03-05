@@ -20,6 +20,9 @@ protected:
     void cameraRotationRequested(double, double, double);
     void cameraTranslationRequested(double, double, double);
 
+    void velocityModified(double);
+    void particleModified(int);
+
 private:
     void notify(void (ViewObserver::*respond)());
 
