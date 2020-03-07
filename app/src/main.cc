@@ -27,8 +27,23 @@ int main()
     Pixmap p(900, 900);
     Painter painter(&p);
 
-    SpiralGalaxy galaxy({ 0, 0, 0 }, 3000, 20000, 0.45, 0.46, 25000, {4, 40});
-    double scale_ratio = 400.0 / 60000;
+    SpiralGalaxy galaxy({ 0, 0, 0 }, 3000, 20000, 0.45, 0.6, 25000, {4, 40});
+    double scale_ratio = 400.0 / 20000;
+
+    painter.setColor({0, 0, 0});
+    painter.fillRect(0, 0, 900, 900, {255, 255, 255});
+
+    for (double r = 1.0 / 5 * galaxy.getRadiusCore(), dr = galaxy.getRadiusCore() / 3; r < galaxy.getRadiusDisk() + 20000; r += dr)
+    {
+        double a = r;
+        double b = sqrt(a * a - pow(galaxy.getEccentricity(r), 2) * a * a);
+
+        drawOrbit(painter, scale_ratio * a, scale_ratio * b, galaxy.getRotationAngle(r), {4, 40}, 450, 450);
+    }
+
+    fd = fopen("orbits.ppm", "w");
+    generator->generate(fd, p);
+    fclose(fd);
 
     painter.setColor({255, 255, 255});
     painter.fillRect(0, 0, 900, 900, {0, 0, 0});

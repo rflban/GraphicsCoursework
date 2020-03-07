@@ -25,7 +25,8 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->velocitySlider, SIGNAL(valueChanged(int)), this, SLOT(modifyVelocity()));
 
     connect(frameTimer, SIGNAL(timeout()), this, SLOT(requestFrame()));
-    frameTimer->start(1000 / 24);
+    frameTimer->start(1000 / 60);
+    //frameTimer->start(1000 / 24);
 }
 
 MainWindow::~MainWindow()

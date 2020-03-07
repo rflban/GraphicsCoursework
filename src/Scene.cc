@@ -24,8 +24,8 @@ Scene::Scene() :
     vel(22500),
 
     m_colNum(200),
-    m_t0(4000),
-    m_t1(10000),
+    m_t0(1000),
+    m_t1(16000),
     m_dt((m_t1-m_t0) /m_colNum)
 {
     resetGalaxy(25000);
@@ -53,7 +53,8 @@ Scene::~Scene()
 
 void Scene::render(InputBuffer &buffer)
 {
-    double time = 400000 + (vel - 20000) * 300;
+    //double time = 400000 + (vel - 20000) * 300;
+    double time = 160000 + (vel - 20000) * 120;
     galaxy->timeStep(time);
 
     buffer.reset();
